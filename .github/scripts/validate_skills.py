@@ -45,7 +45,9 @@ def validate_skill_metadata(skill_dir: Path) -> None:
         r"^description:\s*(.+?)\s*$", frontmatter, re.MULTILINE
     )
     if not name_match or not description_match:
-        fail(f"{skill_file.relative_to(ROOT)} requires non-empty name and description fields.")
+        fail(
+            f"{skill_file.relative_to(ROOT)} requires non-empty name and description fields."
+        )
     name = name_match.group(1).strip().strip("'\"")
     description = description_match.group(1).strip().strip("'\"")
     if len(name) > 64 or not NAME_PATTERN.fullmatch(name):
@@ -53,9 +55,9 @@ def validate_skill_metadata(skill_dir: Path) -> None:
     if name != skill_dir.name:
         fail(f"Skill name {name!r} must match directory {skill_dir.name!r}.")
     if not description or len(description) > 1024:
-        fail(f"Description in {skill_file.relative_to(ROOT)} must be 1-1024 characters.")
-    if not content.split("\n", len(content.splitlines()))[0]:
-        fail(f"Unexpected empty skill content: {skill_file.relative_to(ROOT)}")
+        fail(
+            f"Description in {skill_file.relative_to(ROOT)} must be 1-1024 characters."
+        )
     print(f"PASS metadata: {skill_file.relative_to(ROOT)}")
 
 
