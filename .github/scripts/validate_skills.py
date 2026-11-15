@@ -69,7 +69,10 @@ def validate_markdown_links() -> None:
     for markdown_file in markdown_files:
         content = markdown_file.read_text(encoding="utf-8")
         for match in LINK_PATTERN.finditer(content):
-            raw_target = match.group(1).strip().split(maxsplit=1)[0].strip("<>")
+            destination = match.group(1).strip()
+            if not destination:
+                continue
+            raw_target = destination.split(maxsplit=1)[0].strip("<>")
             parsed = urlsplit(raw_target)
             if parsed.scheme or parsed.netloc or not parsed.path:
                 continue
