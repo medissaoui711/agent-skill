@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - 'skills/**'
+      - 'README.md'
       - '.github/workflows/validate-skills.yml'
       - '.github/scripts/validate_skills.py'
   push:
