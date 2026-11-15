@@ -1,0 +1,50 @@
+name: Validate Agent Skills
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'skills/**'
+      - '.github/workflows/validate-skills.yml'
+      - '.github/scripts/validate_skills.py'
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-skills-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate skill format and repository references
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Go
+        uses: actions/setup-go@v6
+        with:
+          go-version: '1.26.x'
+
+      - name: Install official skills-ref validator
+        run: go install github.com/skills-repos/agentskills/skills-ref/cmd/skills-ref@latest
+
+      - name: Add Go binaries to PATH
+        run: echo "$(go env GOPATH)/bin" >> "$GITHUB_PATH"
+
+      - name: Validate Agent Skills specification
+        run: skills-ref validate --recursive skills
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Validate repository structure and local Markdown links
+        run: python .github/scripts/validate_skills.py
