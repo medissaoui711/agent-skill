@@ -167,7 +167,7 @@ These boundaries help keep review feedback useful, auditable, and safe to act on
 
 ## Validation and quality
 
-This repository includes an automated GitHub Actions workflow that runs when relevant pull requests are opened or updated and when changes are pushed to `main`.
+This repository includes an automated GitHub Actions workflow that runs for pull requests targeting `main`, pushes to `main`, and manual workflow dispatches.
 
 The workflow currently performs:
 
