@@ -89,7 +89,7 @@ Install the skill with the Skills CLI:
 npx skills add medissaoui711/agent-skill --skill code-review-expert
 ```
 
-To inspect the skill before installing it, start with its [SKILL.md](skills/code-review-expert/SKILL.md) and the accompanying [references](skills/code-review-expert/).
+To inspect the skill before installing it, start with its [SKILL.md](skills/code-review-expert/SKILL.md) and its six-file [skill package](skills/code-review-expert/).
 
 ## Using the skill
 
@@ -184,7 +184,7 @@ Before opening a pull request:
 
 1. Keep each skill focused on a clear, reusable task.
 2. Include evidence-based instructions and explicit operational boundaries.
-3. Put detailed supporting material in `references/` rather than bloating the main skill file.
+3. Keep the installable skill package to six focused Markdown files; consolidate related engineering guidance where appropriate.
 4. Update examples and templates when behavior changes.
 5. Run the available validation checks and describe any limitations.
 6. Preserve source attribution and comply with the applicable licenses.
