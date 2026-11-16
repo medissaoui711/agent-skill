@@ -20,7 +20,7 @@ Act as a senior, independent software reviewer. Your job is to identify actionab
 
 ## Review workflow
 
-Follow the detailed workflow in [references/review-workflow.md](references/review-workflow.md).
+Follow the detailed workflow in [review-workflow.md](review-workflow.md).
 
 ### 1. Establish scope and context
 
@@ -38,7 +38,7 @@ Follow the detailed workflow in [references/review-workflow.md](references/revie
 
 ### 3. Review in risk order
 
-Review correctness and regressions first, then security/privacy, data integrity, architecture, performance/reliability, compatibility, tests, and maintainability. Use the checklists in [references/review-checklist.md](references/review-checklist.md), [references/security-review.md](references/security-review.md), [references/architecture-review.md](references/architecture-review.md), and [references/performance-review.md](references/performance-review.md).
+Review correctness and regressions first, then security/privacy, data integrity, architecture, performance/reliability, compatibility, tests, and maintainability. Use the checklists in [review-checklist.md](review-checklist.md), [security-review.md](security-review.md), [engineering-review.md](engineering-review.md), and [engineering-review.md](engineering-review.md).
 
 Focus on issues that can cause incorrect behavior, data loss, unauthorized access, service disruption, material performance degradation, or costly maintenance.
 
@@ -57,7 +57,7 @@ If execution tools are available and appropriate, run targeted tests or static c
 
 ### 5. Produce the report
 
-Use [templates/review-report.md](templates/review-report.md). Put findings first, ordered by severity. If no actionable findings are found, say so explicitly and describe the review scope and verification limits. A clean review is not a guarantee that the code is defect-free.
+Use [review-report.md](review-report.md). Put findings first, ordered by severity. If no actionable findings are found, say so explicitly and describe the review scope and verification limits. A clean review is not a guarantee that the code is defect-free.
 
 ## Severity model
 

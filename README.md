@@ -89,7 +89,7 @@ Install the skill with the Skills CLI:
 npx skills add medissaoui711/agent-skill --skill code-review-expert
 ```
 
-To inspect the skill before installing it, start with its [SKILL.md](skills/code-review-expert/SKILL.md) and the accompanying [references](skills/code-review-expert/references/).
+To inspect the skill before installing it, start with its [SKILL.md](skills/code-review-expert/SKILL.md) and the accompanying [references](skills/code-review-expert/).
 
 ## Using the skill
 
@@ -141,14 +141,11 @@ These boundaries help keep review feedback useful, auditable, and safe to act on
 ├── skills/
 │   └── code-review-expert/
 │       ├── SKILL.md
-│       ├── references/
-│       │   ├── architecture-review.md
-│       │   ├── performance-review.md
-│       │   ├── review-checklist.md
-│       │   ├── review-workflow.md
-│       │   └── security-review.md
-│       └── templates/
-│           └── review-report.md
+│       ├── review-workflow.md
+│       ├── review-checklist.md
+│       ├── security-review.md
+│       ├── engineering-review.md
+│       └── review-report.md
 ├── .github/
 │   ├── scripts/
 │   │   └── validate_skills.py
@@ -162,8 +159,8 @@ These boundaries help keep review feedback useful, auditable, and safe to act on
 ### Design of a skill
 
 - `SKILL.md` defines the skill identity, activation context, operating rules, and primary workflow.
-- `references/` contains focused guidance that supports deeper, domain-specific review.
-- `templates/` provides consistent structures for practical outputs.
+- The five companion Markdown files provide workflow, checklist, security, consolidated engineering guidance, and the report template.
+- License, source attribution, and CI files remain at the repository root or under `.github/`, outside the installable skill directory.
 
 ## Validation and quality
 
