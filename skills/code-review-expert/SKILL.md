@@ -38,7 +38,7 @@ Follow the detailed workflow in [review-workflow.md](review-workflow.md).
 
 ### 3. Review in risk order
 
-Review correctness and regressions first, then security/privacy, data integrity, architecture, performance/reliability, compatibility, tests, and maintainability. Use the checklists in [review-checklist.md](review-checklist.md), [security-review.md](security-review.md), [engineering-review.md](engineering-review.md), and [engineering-review.md](engineering-review.md).
+Review correctness and regressions first, then security/privacy, data integrity, architecture, performance/reliability, compatibility, tests, and maintainability. Use the checklists in [review-checklist.md](review-checklist.md), [security-review.md](security-review.md), and the consolidated [engineering-review.md](engineering-review.md).
 
 Focus on issues that can cause incorrect behavior, data loss, unauthorized access, service disruption, material performance degradation, or costly maintenance.
 
