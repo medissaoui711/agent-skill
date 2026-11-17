@@ -1,3 +1,4 @@
+import builtins
 import hashlib
 import json
 import os
@@ -6,6 +7,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "experiments" / "freeze_run.py"
@@ -119,6 +121,25 @@ class FreezeRunTests(unittest.TestCase):
             with self.subTest(metadata=metadata):
                 with self.assertRaises(ValueError):
                     build_record(metadata, self.prompt, self.raw)
+
+    def test_schema_rejects_invalid_calendar_date_time(self):
+        metadata = dict(self.metadata, started_at="2026-02-30T00:00:00Z")
+        with self.assertRaises(ValueError):
+            build_record(metadata, self.prompt, self.raw)
+
+    def test_missing_jsonschema_fails_with_install_instruction(self):
+        real_import = builtins.__import__
+
+        def import_without_jsonschema(name, *args, **kwargs):
+            if name == "jsonschema" or name.startswith("jsonschema."):
+                raise ModuleNotFoundError("simulated missing jsonschema")
+            return real_import(name, *args, **kwargs)
+
+        with patch("builtins.__import__", side_effect=import_without_jsonschema):
+            with self.assertRaisesRegex(
+                RuntimeError, "benchmark/experiments/requirements.txt"
+            ):
+                build_record(self.metadata, self.prompt, self.raw)
 
     def test_schema_rejects_missing_required_fields(self):
         metadata = dict(self.metadata)
