@@ -15,12 +15,18 @@ Measure whether Code Review Expert improves defect discovery, localization, seve
 
 Difficulty target: Easy 30%, Medium 45%, Hard 25%. The pilot is a pipeline-validation subset, not a representative sample.
 
-## Five-case pilot
-- logic-001: incorrect boolean business-rule condition.
-- security-001: untrusted path segment can escape a configured storage root.
-- architecture-001: request-context coupling breaks a service used by a worker.
-- performance-001: per-record database access creates an N+1 pattern.
-- control-001: valid implementation intended to expose speculative findings.
+## Controlled expansion status
+
+The original five pilot cases remain unchanged. Phase 5D Batch A adds seven cases:
+- logic-002: concurrent inventory reservation.
+- logic-003: optional delivery note semantics.
+- logic-004: payment capture failure propagation.
+- security-002: Django SQL query construction.
+- security-003: project document authorization.
+- security-004: server-side avatar URL retrieval.
+- control-002: notification preference allowlist.
+
+The public manifest validator must validate the complete 12-case set. The private reference records remain separate and are not part of this repository.
 
 ## Experimental design
 Compare a strong generic baseline with the same model plus Code Review Expert. Keep model/version, prompt, files, tools, context budget, sampling settings, and input order constant. The skill package must be the only intended variable. Record unavoidable differences.
