@@ -11,9 +11,23 @@ CATEGORIES = {"correctness", "security", "architecture", "performance", "reliabi
 REQUIRED = ("title", "category", "severity", "file", "description")
 
 
+def _reject_duplicate_keys(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
+    result: dict[str, Any] = {}
+    for key, value in pairs:
+        if key in result:
+            raise ValueError(f"Duplicate JSON object key: {key}")
+        result[key] = value
+    return result
+
+
+def _reject_non_finite(value: str) -> None:
+    raise ValueError(f"Non-standard JSON numeric constant is not allowed: {value}")
+
+
 def load_json(path: str | Path) -> Any:
     with Path(path).open("r", encoding="utf-8") as handle:
-        return json.load(handle)
+        return json.load(handle, object_pairs_hook=_reject_duplicate_keys,
+                          parse_constant=_reject_non_finite)
 
 
 def write_json(path: str | Path, value: Any) -> None:
@@ -52,7 +66,10 @@ def normalize_findings(payload: Any) -> list[dict[str, Any]]:
         if line is not None and (isinstance(line, bool) or not isinstance(line, int) or line < 1):
             raise ValueError(f"Finding {index} line must be a positive integer or null.")
         file_path = normalize_path(item["file"])
-        if file_path.startswith("/") or ".." in file_path.split("/"):
+        if (not file_path or file_path.startswith("/") or
+                re.match(r"^[A-Za-z]:", file_path) or
+                ".." in file_path.split("/") or
+                any(ord(char) < 32 for char in file_path)):
             raise ValueError(f"Finding {index} file must be a safe repository-relative path.")
         normalized.append({**item, "title": item["title"].strip(), "category": category,
                            "severity": severity, "file": file_path, "line": line,
