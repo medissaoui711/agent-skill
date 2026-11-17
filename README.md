@@ -12,6 +12,10 @@ The repository currently includes **Code Review Expert**: a senior-reviewer-orie
 
 A separate **Code Review Benchmark** provides **40 public synthetic review cases** and a deterministic evaluation harness. Its private answer key is intentionally maintained outside this public repository.
 
+<!-- benchmark:public-case-count = 40 -->
+
+Current infrastructure and measurement gates are summarized in [STATUS.md](STATUS.md).
+
 ---
 
 ## Contents
