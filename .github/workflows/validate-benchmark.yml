@@ -2,12 +2,12 @@ name: Validate Code Review Benchmark
 
 on:
   pull_request:
-    branches: [main]
+    branches: [main, feat/phase-5d-batch-a]
     paths:
       - 'benchmark/**'
       - '.github/workflows/validate-benchmark.yml'
   push:
-    branches: [main]
+    branches: [main, feat/phase-5d-batch-a]
     paths:
       - 'benchmark/**'
       - '.github/workflows/validate-benchmark.yml'
