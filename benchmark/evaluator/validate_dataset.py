@@ -7,7 +7,8 @@ from common import ROOT, load_json
 EXPECTED = {
     "logic-001", "logic-002", "logic-003", "logic-004", "logic-005", "logic-006", "logic-007",
     "security-001", "security-002", "security-003", "security-004", "security-005", "security-006", "security-007",
-    "architecture-001", "architecture-002", "architecture-003", "performance-001", "control-001", "control-002", "control-003",
+    "architecture-001", "architecture-002", "architecture-003", "architecture-004", "architecture-005", "architecture-006", "performance-001", "control-001", "control-002", "control-003",
+    "logic-008", "logic-009", "logic-010", "security-008", "security-009", "security-010",
 }
 CASE_REQUIRED = {"id", "category", "difficulty", "title", "task_file", "project_files"}
 
@@ -69,7 +70,7 @@ def validate() -> list[str]:
     if len(ids) != len(set(ids)):
         errors.append("Case IDs must be unique.")
     if set(ids) != EXPECTED:
-        errors.append(f"Batch A+B dataset must contain exactly: {sorted(EXPECTED)}.")
+        errors.append(f"Batch A+B+C dataset must contain exactly: {sorted(EXPECTED)}.")
     forbidden = {"ground-truth", "expected-results", "answer-key", "answer_key"}
     for path in benchmark_root.rglob("*"):
         if any(part.lower() in forbidden for part in path.parts):
@@ -82,7 +83,7 @@ def main() -> int:
         for error in errors:
             print(f"ERROR: {error}")
         return 1
-    print("SUCCESS: Batch A+B public manifest, schemas, and referenced files are valid.")
+    print("SUCCESS: Batch A+B+C public manifest, schemas, and referenced files are valid.")
     return 0
 
 if __name__ == "__main__":

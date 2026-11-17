@@ -1,6 +1,6 @@
 # Code Review Benchmark
 
-A public, evidence-oriented benchmark for Code Review Expert. The original five-case pilot is retained and Phase 5D Batch A adds seven synthetic cases (12 public cases total). Public case materials intentionally omit expected findings and answer keys.
+A public, evidence-oriented benchmark for Code Review Expert. The original five-case pilot is retained and Phase 5D Batches A–C add 25 synthetic cases (30 public cases total). Public case materials intentionally omit expected findings and answer keys.
 
 ## Safety and separation
 - Projects are synthetic fixtures, not production software. Some intentionally contain defects; do not deploy them.
@@ -54,7 +54,7 @@ Run matching only in the isolated evaluation environment after raw review output
 See [SCORING_POLICY.md](SCORING_POLICY.md) for matching and scoring semantics.
 
 ## Development-stage limitation
-The 12-case set validates the expanding pipeline, not general model capability. Do not publish capability claims or claim V1 thresholds from these cases. Continue the controlled expansion toward 40 cases and run repeated baseline/skill-enabled trials. Independent human adjudication remains a pre-commercial readiness requirement; current provisional labels are not independently adjudicated or scoring-eligible.
+The 30-case set validates the expanding pipeline, not general model capability. Do not publish capability claims or claim V1 thresholds from these cases. Continue the controlled expansion toward 40 cases and run repeated baseline/skill-enabled trials. Independent human adjudication remains a pre-commercial readiness requirement; current provisional labels are not independently adjudicated or scoring-eligible.
 
 
 ## Phase 5D Batch B
@@ -70,3 +70,13 @@ The validator requires the exact 21-case inventory. This remains a development d
 
 ### CI workflow
 The benchmark validation workflow also runs for pull requests targeting `feat/phase-5d-batch-a`, so the chained Batch B PR receives the same Python 3.11/3.12 dataset and evaluator checks. The workflow uses read-only repository permissions and does not execute fixture project code.
+
+
+## Phase 5D Batch C
+
+Batch C adds nine synthetic cases to the 21-case Batch B inventory (30 public fixtures total):
+- Logic: logic-008 (Go integer overflow), logic-009 (Spring promotion policy), logic-010 (Node.js payment retry idempotency).
+- Security: security-008 (Spring mass assignment), security-009 (Express secret-bearing logs), security-010 (FastAPI refresh-token purpose).
+- Architecture: architecture-004 (Django request coupling), architecture-005 (Prisma type leakage), architecture-006 (Go worker context lifecycle).
+
+The validator requires exactly 30 unique case IDs. This remains a development dataset; private references stay restricted and no scoring eligibility or independent adjudication is claimed.

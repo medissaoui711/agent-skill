@@ -51,3 +51,8 @@ Review receives public case files only. Ground truth remains unavailable until r
 ## Phase 5D Batch B implementation scope
 
 Batch B adds nine fixtures to the existing 12-case public set, bringing the manifest target for this development slice to 21 cases. The additions cover Spring transaction boundaries, React state mutation, Django pagination, Express middleware ordering, unsafe deserialization, Go filesystem containment, Go service-layer coupling, Spring circular dependencies, and a clean parameterized-query control. Private expected findings remain outside this repository. The 21-case inventory is not a representative 40-case benchmark and does not authorize capability claims or scoring.
+
+
+## Phase 5D Batch C implementation scope
+
+Batch C adds nine fixtures to the existing 21-case inventory, bringing the public development slice to 30 cases. The additions cover Go integer overflow, Spring promotion-policy composition, Node.js payment retry idempotency, Spring mass assignment, Express secret-bearing logs, FastAPI refresh-token purpose validation, Django application-service request coupling, Prisma persistence-type leakage, and Go worker cancellation-context ownership. Private expected findings remain in the restricted repository. This 30-case development slice is not a representative 40-case benchmark and does not authorize capability claims or scoring.

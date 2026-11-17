@@ -23,17 +23,20 @@ class DatasetTests(unittest.TestCase):
     def test_manifest_and_references_validate(self):
         self.assertEqual(validate(), [])
 
-    def test_batch_a_and_b_manifest_contains_twenty_one_unique_cases(self):
+    def test_batch_a_b_and_c_manifest_contains_thirty_unique_cases(self):
         from common import ROOT
         manifest = load_json(ROOT / "benchmark/cases/manifest.json")
         ids = [case["id"] for case in manifest["cases"]]
-        self.assertEqual(len(ids), 21)
+        self.assertEqual(len(ids), 30)
         self.assertEqual(len(ids), len(set(ids)))
         self.assertTrue({"logic-002", "logic-003", "logic-004",
                          "security-002", "security-003", "security-004",
                          "control-002", "logic-005", "logic-006", "logic-007",
                          "security-005", "security-006", "security-007",
-                         "architecture-002", "architecture-003", "control-003"}.issubset(set(ids)))
+                         "architecture-002", "architecture-003", "control-003",
+                         "logic-008", "logic-009", "logic-010",
+                         "security-008", "security-009", "security-010",
+                         "architecture-004", "architecture-005", "architecture-006"}.issubset(set(ids)))
 
     def test_rejects_unknown_category(self):
         with self.assertRaises(ValueError):
