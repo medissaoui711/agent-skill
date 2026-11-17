@@ -16,8 +16,6 @@ import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 
-from jsonschema import Draft202012Validator, FormatChecker
-
 SHA256 = re.compile(r"^[a-f0-9]{64}$")
 SHA1 = re.compile(r"^[a-f0-9]{40}$")
 SCHEMA_PATH = Path(__file__).with_name("run.schema.json")
@@ -36,7 +34,16 @@ def _reject_non_json_constant(value: str):
 
 
 def validate_record(record: dict) -> None:
-    """Validate the complete final record against the published Draft 2020-12 schema."""
+    """Validate the complete final record; never skip JSON Schema format checks."""
+    try:
+        from jsonschema import Draft202012Validator, FormatChecker
+    except ImportError as exc:
+        raise RuntimeError(
+            "Missing required dependency 'jsonschema[format]==4.25.1'. "
+            "Install it with: python -m pip install -r "
+            "benchmark/experiments/requirements.txt"
+        ) from exc
+
     schema = json.loads(
         SCHEMA_PATH.read_text(encoding="utf-8"),
         parse_constant=_reject_non_json_constant,
@@ -153,7 +160,7 @@ def main() -> int:
             "prompt_sha256": record["prompt_sha256"],
             "raw_output_sha256": record["raw_output_sha256"],
         }, indent=2, allow_nan=False))
-    except (OSError, ValueError, TypeError, json.JSONDecodeError) as exc:
+    except (OSError, ValueError, TypeError, json.JSONDecodeError, RuntimeError) as exc:
         print(f"EXPERIMENT_FREEZE_FAILED: {exc}", file=sys.stderr)
         return 1
     return 0
