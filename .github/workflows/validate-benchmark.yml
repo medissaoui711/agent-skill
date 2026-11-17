@@ -1,0 +1,38 @@
+name: Validate Code Review Benchmark
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'benchmark/**'
+      - '.github/workflows/validate-benchmark.yml'
+  push:
+    branches: [main]
+    paths:
+      - 'benchmark/**'
+      - '.github/workflows/validate-benchmark.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-benchmark-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    name: Validate public benchmark dataset and evaluator
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Validate public dataset
+        run: python benchmark/evaluator/validate_dataset.py
+      - name: Run evaluator unit tests
+        run: python -m unittest discover -s benchmark/tests -v
