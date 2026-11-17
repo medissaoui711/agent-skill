@@ -19,3 +19,7 @@ The tool accepts no Ground Truth path. The false access field is an operator att
 ## Publication gate
 
 Publication is opt-in only after owner approval and review for secrets, PII/sensitive data, answer leakage, and benchmark contamination. Raw reviews can function as answer keys. Default: PRIVATE.
+
+## Integrity guarantees
+
+The CLI validates the complete generated record against `run.schema.json` using JSON Schema Draft 2020-12, including date-time format checks, before writing. It serializes strict JSON (NaN and Infinity are rejected), writes a same-directory temporary file, and atomically creates the destination with an exclusive hard link. Concurrent attempts cannot overwrite one another, and validation or serialization failures leave no final record.
