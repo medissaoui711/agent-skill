@@ -55,7 +55,7 @@ Capture dataset version/hash, repository commit, model/version, date/time, promp
 
 ## Metrics and report integrity
 
-The metrics stage validates all count fields as non-negative integers (booleans are not integers for this contract), verifies `candidate_count = TP + FP + duplicates`, verifies `expected_count = TP + FN`, and requires one match record per scored TP. Severity and localization flags on scored matches must be booleans. When the matcher supplies an optimal-assignment diagnostic, its scored-forced-match count must equal TP and its maximum cardinality cannot be below TP.
+The metrics stage validates all count fields as non-negative integers (booleans are not integers for this contract), verifies `candidate_count = TP + FP` (duplicates are already included in FP), verifies `duplicate_count <= FP`, and verifies `expected_count = TP + FN`, and requires one match record per scored TP. Severity and localization flags on scored matches must be booleans. When the matcher supplies an optimal-assignment diagnostic, its scored-forced-match count must equal TP and its maximum cardinality cannot be below TP.
 
 The metrics artifact retains a safe diagnostic summary: ambiguous finding count and reason counts, conflicting duplicate-group count, unmatched/false-negative counts, and the optimal-assignment objective. The Markdown report must distinguish maximum achievable cardinality from forced matches actually scored. It does not reproduce private reference payloads.
 
