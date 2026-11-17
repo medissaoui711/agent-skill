@@ -58,11 +58,14 @@ class DocumentationConsistencyTests(unittest.TestCase):
             "## Review protocol", 1
         )[0]
         rows = re.findall(r"^\| ([a-z]+-\d{3}) \| ([^|]+) \| ([^|]+) \|$", table, re.M)
-        documented = [(case_id, category.strip(), title.strip()) for case_id, category, title in rows]
-        expected = [
-            (case["id"], CATEGORY_LABELS[case["category"]], case["title"])
+        documented = {
+            case_id: (category.strip(), title.strip())
+            for case_id, category, title in rows
+        }
+        expected = {
+            case["id"]: (CATEGORY_LABELS[case["category"]], case["title"])
             for case in self.cases
-        ]
+        }
         self.assertEqual(documented, expected)
 
     def test_stale_batch_inventory_and_validator_claims_are_absent(self) -> None:
