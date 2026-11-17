@@ -1,6 +1,6 @@
 # Code Review Benchmark
 
-A public, evidence-oriented benchmark for Code Review Expert. The pilot contains five synthetic review cases. Public case materials intentionally omit expected findings and answer keys.
+A public, evidence-oriented benchmark for Code Review Expert. The original five-case pilot is retained and Phase 5D Batch A adds seven synthetic cases (12 public cases total). Public case materials intentionally omit expected findings and answer keys.
 
 ## Safety and separation
 - Projects are synthetic fixtures, not production software. Some intentionally contain defects; do not deploy them.
@@ -8,14 +8,24 @@ A public, evidence-oriented benchmark for Code Review Expert. The pilot contains
 - The review environment must not access the private ground-truth repository.
 - Only the isolated evaluator receives ground truth after raw review output is frozen.
 
-## Pilot inventory
+## Case inventory
+
 | ID | Area | Purpose |
 | --- | --- | --- |
 | logic-001 | Logic | Boolean business-rule reasoning |
+| logic-002 | Logic | Concurrent inventory reservation |
+| logic-003 | Logic | Optional field update semantics |
+| logic-004 | Logic | Payment failure propagation |
 | security-001 | Security | Path traversal and filesystem boundaries |
+| security-002 | Security | Safe SQL query construction |
+| security-003 | Security | Project document authorization |
+| security-004 | Security | Server-side URL retrieval boundary |
 | architecture-001 | Architecture | Request-context coupling across entry points |
 | performance-001 | Performance | N+1 database access |
 | control-001 | Control | Clean implementation / false-positive restraint |
+| control-002 | Control | Allowlist validation and authenticated identity |
+
+The manifest is the authoritative list of currently implemented public cases. Batch A is a controlled expansion slice, not a representative 40-case benchmark.
 
 The control case is not labelled as clean in its task. Its expected result is private.
 
@@ -43,5 +53,5 @@ Run matching only in the isolated evaluation environment after raw review output
 
 See [SCORING_POLICY.md](SCORING_POLICY.md) for matching and scoring semantics.
 
-## Pilot limitation
-Five cases validate the pipeline, not general model capability. Do not publish capability claims or claim V1 thresholds from this pilot. Expand to 40 cases, independently review ground truth, and run repeated baseline/skill-enabled trials.
+## Development-stage limitation
+The 12-case set validates the expanding pipeline, not general model capability. Do not publish capability claims or claim V1 thresholds from these cases. Continue the controlled expansion toward 40 cases and run repeated baseline/skill-enabled trials. Independent human adjudication remains a pre-commercial readiness requirement; current provisional labels are not independently adjudicated or scoring-eligible.

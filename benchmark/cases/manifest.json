@@ -56,6 +56,76 @@
         "benchmark/cases/control-001/project/profile-controller.js",
         "benchmark/cases/control-001/project/profile-repository-contract.md"
       ]
+    },
+    {
+      "id": "logic-002",
+      "category": "logic",
+      "difficulty": "medium",
+      "title": "Concurrent inventory reservation",
+      "task_file": "benchmark/cases/logic-002/task.md",
+      "project_files": [
+        "benchmark/cases/logic-002/project/inventory.ts"
+      ]
+    },
+    {
+      "id": "logic-003",
+      "category": "logic",
+      "difficulty": "easy",
+      "title": "Optional delivery note update",
+      "task_file": "benchmark/cases/logic-003/task.md",
+      "project_files": [
+        "benchmark/cases/logic-003/project/routes.py"
+      ]
+    },
+    {
+      "id": "logic-004",
+      "category": "logic",
+      "difficulty": "medium",
+      "title": "Payment capture failure propagation",
+      "task_file": "benchmark/cases/logic-004/task.md",
+      "project_files": [
+        "benchmark/cases/logic-004/project/payment.go"
+      ]
+    },
+    {
+      "id": "security-002",
+      "category": "security",
+      "difficulty": "easy",
+      "title": "Customer search query handling",
+      "task_file": "benchmark/cases/security-002/task.md",
+      "project_files": [
+        "benchmark/cases/security-002/project/views.py"
+      ]
+    },
+    {
+      "id": "security-003",
+      "category": "security",
+      "difficulty": "medium",
+      "title": "Project document authorization",
+      "task_file": "benchmark/cases/security-003/task.md",
+      "project_files": [
+        "benchmark/cases/security-003/project/documents.go"
+      ]
+    },
+    {
+      "id": "security-004",
+      "category": "security",
+      "difficulty": "hard",
+      "title": "Remote avatar import",
+      "task_file": "benchmark/cases/security-004/task.md",
+      "project_files": [
+        "benchmark/cases/security-004/project/AvatarImportService.java"
+      ]
+    },
+    {
+      "id": "control-002",
+      "category": "control",
+      "difficulty": "easy",
+      "title": "Notification preference allowlist",
+      "task_file": "benchmark/cases/control-002/task.md",
+      "project_files": [
+        "benchmark/cases/control-002/project/preferences.ts"
+      ]
     }
   ]
 }

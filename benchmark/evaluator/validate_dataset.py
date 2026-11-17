@@ -1,10 +1,14 @@
 #!/usr/bin/env python3
-"""Validate the public pilot manifest, schemas, and referenced fixture files."""
+"""Validate the public benchmark manifest, schemas, and referenced fixture files."""
 from __future__ import annotations
 import sys
 from common import ROOT, load_json
 
-EXPECTED = {"logic-001", "security-001", "architecture-001", "performance-001", "control-001"}
+EXPECTED = {
+    "logic-001", "logic-002", "logic-003", "logic-004",
+    "security-001", "security-002", "security-003", "security-004",
+    "architecture-001", "performance-001", "control-001", "control-002",
+}
 CASE_REQUIRED = {"id", "category", "difficulty", "title", "task_file", "project_files"}
 
 def validate() -> list[str]:
@@ -65,7 +69,7 @@ def validate() -> list[str]:
     if len(ids) != len(set(ids)):
         errors.append("Case IDs must be unique.")
     if set(ids) != EXPECTED:
-        errors.append(f"Pilot must contain exactly: {sorted(EXPECTED)}.")
+        errors.append(f"Batch A dataset must contain exactly: {sorted(EXPECTED)}.")
     forbidden = {"ground-truth", "expected-results", "answer-key", "answer_key"}
     for path in benchmark_root.rglob("*"):
         if any(part.lower() in forbidden for part in path.parts):
@@ -78,7 +82,7 @@ def main() -> int:
         for error in errors:
             print(f"ERROR: {error}")
         return 1
-    print("SUCCESS: public pilot manifest, schemas, and referenced files are valid.")
+    print("SUCCESS: Batch A public manifest, schemas, and referenced files are valid.")
     return 0
 
 if __name__ == "__main__":
