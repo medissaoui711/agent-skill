@@ -2,12 +2,14 @@ package example.reports;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 import org.springframework.stereotype.Service;
 
 @Service
 public class ReportExportService {
     private final ReportRepository repository;
     private final FileStore fileStore;
+    private final Executor executor = Executors.newCachedThreadPool();
 
     public ReportExportService(ReportRepository repository, FileStore fileStore) {
         this.repository = repository;
@@ -18,6 +20,6 @@ public class ReportExportService {
         return CompletableFuture.supplyAsync(() -> {
             var rows = repository.loadRows(reportId);
             return fileStore.writeCsv(reportId, rows);
-        });
+        }, executor);
     }
 }
