@@ -55,3 +55,18 @@ See [SCORING_POLICY.md](SCORING_POLICY.md) for matching and scoring semantics.
 
 ## Development-stage limitation
 The 12-case set validates the expanding pipeline, not general model capability. Do not publish capability claims or claim V1 thresholds from these cases. Continue the controlled expansion toward 40 cases and run repeated baseline/skill-enabled trials. Independent human adjudication remains a pre-commercial readiness requirement; current provisional labels are not independently adjudicated or scoring-eligible.
+
+
+## Phase 5D Batch B
+
+Batch B adds nine synthetic cases to the 12-case Batch A inventory (21 public fixtures total):
+- Logic: logic-005 (Spring transaction boundary), logic-006 (React state mutation), logic-007 (Django pagination).
+- Security: security-005 (Express middleware ordering), security-006 (unsafe Django deserialization), security-007 (Go path containment).
+- Architecture: architecture-002 (Go HTTP coupling), architecture-003 (Spring circular dependency).
+- Control: control-003 (parameterized Django query).
+
+The validator requires the exact 21-case inventory. This remains a development dataset, not an independently adjudicated or scoring-eligible benchmark.
+
+
+### CI workflow
+The benchmark validation workflow also runs for pull requests targeting `feat/phase-5d-batch-a`, so the chained Batch B PR receives the same Python 3.11/3.12 dataset and evaluator checks. The workflow uses read-only repository permissions and does not execute fixture project code.
