@@ -75,12 +75,15 @@ A JSON object contains a `findings` array. Each finding requires `title`, `categ
 
 ## Local validation
 
-Requires Python 3.11+ and the standard library:
+Python 3.11+ is required. The experiment freeze utility and its tests also require the pinned JSON Schema runtime dependency:
 
 ```bash
+python -m pip install -r benchmark/experiments/requirements.txt
 python benchmark/evaluator/validate_dataset.py
 python -m unittest discover -s benchmark/tests -v
 ```
+
+The dependency file pins `jsonschema[format]==4.25.1`. The format extra is required for strict JSON Schema `date-time` validation; the freeze utility fails with an actionable error if the dependency is unavailable and never skips format checks.
 
 The evaluator pipeline is composed of four explicit CLI stages:
 

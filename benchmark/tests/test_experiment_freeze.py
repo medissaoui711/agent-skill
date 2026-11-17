@@ -1,3 +1,4 @@
+import builtins
 import hashlib
 import json
 import os
@@ -6,6 +7,7 @@ import sys
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 ROOT = Path(__file__).resolve().parents[1]
 SCRIPT = ROOT / "experiments" / "freeze_run.py"
@@ -119,6 +121,46 @@ class FreezeRunTests(unittest.TestCase):
             with self.subTest(metadata=metadata):
                 with self.assertRaises(ValueError):
                     build_record(metadata, self.prompt, self.raw)
+
+    def test_schema_rejects_invalid_calendar_date_time(self):
+        metadata = dict(self.metadata, started_at="2026-02-30T00:00:00Z")
+        with self.assertRaises(ValueError):
+            build_record(metadata, self.prompt, self.raw)
+
+    def test_missing_jsonschema_fails_with_install_instruction(self):
+        real_import = builtins.__import__
+
+        def import_without_jsonschema(name, *args, **kwargs):
+            if name == "jsonschema" or name.startswith("jsonschema."):
+                raise ModuleNotFoundError("simulated missing jsonschema")
+            return real_import(name, *args, **kwargs)
+
+        with patch("builtins.__import__", side_effect=import_without_jsonschema):
+            with self.assertRaisesRegex(
+                RuntimeError, "benchmark/experiments/requirements.txt"
+            ):
+                build_record(self.metadata, self.prompt, self.raw)
+
+    def test_cli_fails_closed_when_jsonschema_is_unavailable(self):
+        output = self.root / "missing-dependency-record.json"
+        result = subprocess.run(
+            [
+                sys.executable, "-S", str(SCRIPT),
+                "--metadata", str(self.metadata_path),
+                "--prompt", str(self.prompt),
+                "--raw-output", str(self.raw),
+                "--output", str(output),
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("EXPERIMENT_FREEZE_FAILED", result.stderr)
+        self.assertIn("Missing required dependency", result.stderr)
+        self.assertIn("benchmark/experiments/requirements.txt", result.stderr)
+        self.assertFalse(output.exists())
+        self.assertEqual(list(self.root.glob(f".{output.name}.*.tmp")), [])
 
     def test_schema_rejects_missing_required_fields(self):
         metadata = dict(self.metadata)

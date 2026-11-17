@@ -1,0 +1,3 @@
+# Runtime dependency for the experiment freeze utility and its tests.
+# The format extra supplies the validators used by JSON Schema date-time checks.
+jsonschema[format]==4.25.1
