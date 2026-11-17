@@ -12,6 +12,8 @@ on:
     branches: [main, feat/phase-5g-evidence-infra]
     paths:
       - 'benchmark/**'
+      - 'README.md'
+      - 'STATUS.md'
       - '.github/workflows/validate-benchmark.yml'
   workflow_dispatch:
 
