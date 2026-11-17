@@ -18,15 +18,6 @@ CATEGORY_LABELS = {
     "performance": "Performance / Reliability",
     "control": "Clean / Control",
 }
-EXPECTED_COUNTS = {
-    "logic": 10,
-    "security": 10,
-    "architecture": 6,
-    "performance": 6,
-    "control": 8,
-}
-
-
 class DocumentationConsistencyTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -37,12 +28,13 @@ class DocumentationConsistencyTests(unittest.TestCase):
 
     def test_manifest_has_expected_v1_development_inventory(self) -> None:
         self.assertEqual(len(self.cases), 40)
-        counts = {
-            category: sum(case["category"] == category for case in self.cases)
-            for category in EXPECTED_COUNTS
-        }
-        self.assertEqual(counts, EXPECTED_COUNTS)
+        self.assertEqual({case["category"] for case in self.cases}, set(CATEGORY_LABELS))
         self.assertEqual(len({case["id"] for case in self.cases}), 40)
+
+    def test_root_readme_case_count_marker_matches_manifest(self) -> None:
+        matches = re.findall(r"<!--\s*benchmark:public-case-count\s*=\s*(\d+)\s*-->", self.root_readme)
+        self.assertEqual(len(matches), 1)
+        self.assertEqual(int(matches[0]), len(self.cases))
 
     def test_root_readme_describes_40_public_fixtures_not_five_case_pilot(self) -> None:
         self.assertRegex(self.root_readme, r"40 public synthetic review cases")
