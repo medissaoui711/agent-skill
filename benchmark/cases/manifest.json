@@ -1,0 +1,61 @@
+{
+  "version": "1.0.0",
+  "cases": [
+    {
+      "id": "logic-001",
+      "category": "logic",
+      "difficulty": "easy",
+      "title": "Subscription shipping eligibility",
+      "task_file": "benchmark/cases/logic-001/task.md",
+      "project_files": [
+        "benchmark/cases/logic-001/project/shipping.js"
+      ]
+    },
+    {
+      "id": "security-001",
+      "category": "security",
+      "difficulty": "medium",
+      "title": "User document download endpoint",
+      "task_file": "benchmark/cases/security-001/task.md",
+      "project_files": [
+        "benchmark/cases/security-001/project/download.js",
+        "benchmark/cases/security-001/project/repository.js"
+      ]
+    },
+    {
+      "id": "architecture-001",
+      "category": "architecture",
+      "difficulty": "medium",
+      "title": "Invoice service shared by HTTP and worker",
+      "task_file": "benchmark/cases/architecture-001/task.md",
+      "project_files": [
+        "benchmark/cases/architecture-001/project/invoice-service.js",
+        "benchmark/cases/architecture-001/project/http-controller.js",
+        "benchmark/cases/architecture-001/project/worker.js",
+        "benchmark/cases/architecture-001/project/invoice-repository.js"
+      ]
+    },
+    {
+      "id": "performance-001",
+      "category": "performance",
+      "difficulty": "easy",
+      "title": "Order summary aggregation",
+      "task_file": "benchmark/cases/performance-001/task.md",
+      "project_files": [
+        "benchmark/cases/performance-001/project/order-summary.js"
+      ]
+    },
+    {
+      "id": "control-001",
+      "category": "control",
+      "difficulty": "medium",
+      "title": "Account profile update flow",
+      "task_file": "benchmark/cases/control-001/task.md",
+      "project_files": [
+        "benchmark/cases/control-001/project/profile-service.js",
+        "benchmark/cases/control-001/project/profile-controller.js",
+        "benchmark/cases/control-001/project/profile-repository-contract.md"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Public benchmark case",
+  "type": "object",
+  "required": [
+    "id",
+    "category",
+    "difficulty",
+    "title",
+    "task_file",
+    "project_files"
+  ],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z]+-[0-9]{3}$"
+    },
+    "category": {
+      "enum": [
+        "logic",
+        "security",
+        "architecture",
+        "performance",
+        "control"
+      ]
+    },
+    "difficulty": {
+      "enum": [
+        "easy",
+        "medium",
+        "hard"
+      ]
+    },
+    "title": {
+      "type": "string",
+      "minLength": 5
+    },
+    "task_file": {
+      "type": "string",
+      "pattern": "^benchmark/cases/[a-z]+-[0-9]{3}/task\\.md$"
+    },
+    "project_files": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "pattern": "^benchmark/cases/[a-z]+-[0-9]{3}/project/.+"
+      }
+    }
+  }
+}

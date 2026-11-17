@@ -3,11 +3,14 @@
 **A focused collection of reusable, evidence-driven skills for AI-assisted software engineering.**
 
 [![Validate Agent Skills](https://github.com/medissaoui711/agent-skill/actions/workflows/validate-skills.yml/badge.svg?branch=main)](https://github.com/medissaoui711/agent-skill/actions/workflows/validate-skills.yml)
+[![Validate Benchmark](https://github.com/medissaoui711/agent-skill/actions/workflows/validate-benchmark.yml/badge.svg?branch=main)](https://github.com/medissaoui711/agent-skill/actions/workflows/validate-benchmark.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
 Agent Skills is a growing repository of structured instructions and supporting resources designed to help AI coding agents perform engineering work with greater consistency, rigor, and transparency.
 
 The repository currently includes **Code Review Expert**: a senior-reviewer-oriented skill for examining pull requests, diffs, repositories, and proposed changes. It prioritizes actionable findings, traceable evidence, and honest reporting over superficial feedback.
+
+A separate **Code Review Benchmark** provides synthetic review cases and a deterministic evaluation harness. Its private answer key is intentionally maintained outside this public repository.
 
 ---
 
@@ -16,6 +19,7 @@ The repository currently includes **Code Review Expert**: a senior-reviewer-orie
 - [Why this repository](#why-this-repository)
 - [Available skills](#available-skills)
 - [Code Review Expert](#code-review-expert)
+- [Code Review Benchmark](#code-review-benchmark)
 - [Installation](#installation)
 - [Using the skill](#using-the-skill)
 - [Review principles](#review-principles)
@@ -80,6 +84,14 @@ New skills may be added as they are documented and validated. The table above re
 | **Informational** | Non-blocking observation or improvement. | Consider; not a defect by itself |
 
 Severity describes impact, not confidence. Findings should not be inflated to make a review appear more valuable.
+
+## Code Review Benchmark
+
+The public benchmark contains synthetic review cases, schemas, validation tools, and a deterministic evaluation harness. The pilot has five cases; the approved V1 target is 40 cases across logic/runtime, security, architecture, performance/reliability, and clean controls.
+
+**Ground truth and expected answers are not stored in this repository.** Review execution and evaluation are separated to prevent answer-key leakage.
+
+See [benchmark/README.md](benchmark/README.md) for the protocol, case inventory, and local validation. The five-case pilot validates the benchmark pipeline; it does not certify model capability or establish that V1 thresholds have been met.
 
 ## Installation
 
@@ -146,11 +158,17 @@ These boundaries help keep review feedback useful, auditable, and safe to act on
 │       ├── security-review.md
 │       ├── engineering-review.md
 │       └── review-report.md
+├── benchmark/
+│   ├── cases/                    # Public synthetic cases; no answer key
+│   ├── evaluator/                # Deterministic post-review evaluator
+│   ├── schemas/
+│   └── tests/
 ├── .github/
 │   ├── scripts/
 │   │   └── validate_skills.py
 │   └── workflows/
-│       └── validate-skills.yml
+│       ├── validate-skills.yml
+│       └── validate-benchmark.yml
 ├── LICENSE
 ├── README.md
 └── SOURCE_AND_LICENSE.md
@@ -160,21 +178,16 @@ These boundaries help keep review feedback useful, auditable, and safe to act on
 
 - `SKILL.md` defines the skill identity, activation context, operating rules, and primary workflow.
 - The five companion Markdown files provide workflow, checklist, security, consolidated engineering guidance, and the report template.
-- License, source attribution, and CI files remain at the repository root or under `.github/`, outside the installable skill directory.
+- License, source attribution, benchmark materials, and CI files remain outside the installable skill directory.
 
 ## Validation and quality
 
-This repository includes an automated GitHub Actions workflow that runs for pull requests targeting `main`, pushes to `main`, and manual workflow dispatches.
+This repository includes separate GitHub Actions workflows:
 
-The workflow currently performs:
+1. **Validate Agent Skills:** checks Agent Skills format, metadata, naming conventions, and local Markdown links.
+2. **Validate Code Review Benchmark:** validates the public pilot manifest and schemas, then runs evaluator unit tests.
 
-1. Agent Skills format validation using the `skills-ref` validator.
-2. Repository checks for skill metadata and naming conventions.
-3. Checks for broken local Markdown links.
-
-See the [validation workflow](.github/workflows/validate-skills.yml) for the exact implementation.
-
-**Important:** passing these checks verifies format and selected repository conventions. It does not prove that a skill will produce correct results in every model, tool environment, or real-world review. Behavioral evaluation remains a separate quality activity.
+Passing these checks verifies only the checks they run. Benchmark CI does not run an AI model, access private ground truth, or certify review quality.
 
 ## Contributing
 
@@ -188,6 +201,7 @@ Before opening a pull request:
 4. Update examples and templates when behavior changes.
 5. Run the available validation checks and describe any limitations.
 6. Preserve source attribution and comply with the applicable licenses.
+7. Never commit private benchmark answers, credentials, or sensitive raw review outputs.
 
 Pull requests should explain the problem being addressed, the proposed change, and how it was verified.
 
