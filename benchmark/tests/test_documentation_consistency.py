@@ -18,13 +18,6 @@ CATEGORY_LABELS = {
     "performance": "Performance / Reliability",
     "control": "Clean / Control",
 }
-def expected_counts(cases: list[dict]) -> dict[str, int]:
-    return {
-        category: sum(case["category"] == category for case in cases)
-        for category in ("logic", "security", "architecture", "performance", "control")
-    }
-
-
 class DocumentationConsistencyTests(unittest.TestCase):
     @classmethod
     def setUpClass(cls) -> None:
@@ -35,11 +28,7 @@ class DocumentationConsistencyTests(unittest.TestCase):
 
     def test_manifest_has_expected_v1_development_inventory(self) -> None:
         self.assertEqual(len(self.cases), 40)
-        counts = {
-            category: sum(case["category"] == category for case in self.cases)
-            for category in expected_counts(self.cases)
-        }
-        self.assertEqual(counts, expected_counts(self.cases))
+        self.assertEqual({case["category"] for case in self.cases}, set(CATEGORY_LABELS))
         self.assertEqual(len({case["id"] for case in self.cases}), 40)
 
     def test_root_readme_case_count_marker_matches_manifest(self) -> None:
