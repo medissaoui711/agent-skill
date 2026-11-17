@@ -1,0 +1,120 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Private experiment run record",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "run_id",
+    "case_id",
+    "arm",
+    "publication_state",
+    "dataset_version",
+    "manifest_sha256",
+    "public_commit",
+    "model_provider",
+    "model_version",
+    "started_at",
+    "prompt_sha256",
+    "raw_output_sha256",
+    "evaluator_commit",
+    "sampling_parameters",
+    "enabled_tools",
+    "execution_environment",
+    "ground_truth_accessed_before_freeze",
+    "exclusions",
+    "failures",
+    "record_sha256"
+  ],
+  "properties": {
+    "run_id": {
+      "type": "string",
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{2,127}$"
+    },
+    "case_id": {
+      "type": "string",
+      "pattern": "^(logic|security|architecture|performance|control)-[0-9]{3}$"
+    },
+    "arm": {
+      "enum": [
+        "baseline",
+        "skill-enabled"
+      ]
+    },
+    "publication_state": {
+      "enum": [
+        "PRIVATE",
+        "REVIEW_PENDING",
+        "APPROVED_FOR_PUBLICATION",
+        "WITHHELD"
+      ]
+    },
+    "dataset_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "manifest_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "public_commit": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "model_provider": {
+      "type": "string",
+      "minLength": 1
+    },
+    "model_version": {
+      "type": "string",
+      "minLength": 1
+    },
+    "started_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "prompt_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "raw_output_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "evaluator_commit": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{40}$"
+    },
+    "sampling_parameters": {
+      "type": "object"
+    },
+    "enabled_tools": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "execution_environment": {
+      "type": "string",
+      "minLength": 1
+    },
+    "ground_truth_accessed_before_freeze": {
+      "const": false
+    },
+    "exclusions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "failures": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "record_sha256": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    }
+  }
+}
