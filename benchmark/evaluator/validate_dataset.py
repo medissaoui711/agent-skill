@@ -71,6 +71,11 @@ def validate() -> list[str]:
                     errors.append(f"{case_id}: missing project file {item!r}.")
     if len(ids) != len(set(ids)):
         errors.append("Case IDs must be unique.")
+    category_counts = {category: sum(1 for case in cases if isinstance(case, dict) and case.get("category") == category)
+                       for category in allowed_categories}
+    expected_category_counts = {"logic": 10, "security": 10, "architecture": 6, "performance": 6, "control": 8}
+    if category_counts != expected_category_counts:
+        errors.append(f"Category distribution must be exactly {expected_category_counts}; got {category_counts}.")
     if set(ids) != EXPECTED:
         errors.append(f"Batch A+B+C+D dataset must contain exactly: {sorted(EXPECTED)}.")
     forbidden = {"ground-truth", "expected-results", "answer-key", "answer_key"}
