@@ -178,7 +178,7 @@ These boundaries help keep review feedback useful, auditable, and safe to act on
 
 - `SKILL.md` defines the skill identity, activation context, operating rules, and primary workflow.
 - The five companion Markdown files provide workflow, checklist, security, consolidated engineering guidance, and the report template.
-- License, source attribution, benchmark materials, and CI files remain outside the installable skill directory.
+- License, authorship documentation, benchmark materials, and CI files remain outside the installable skill directory.
 
 ## Validation and quality
 
@@ -200,7 +200,7 @@ Before opening a pull request:
 3. Keep the installable skill package to six focused Markdown files; consolidate related engineering guidance where appropriate.
 4. Update examples and templates when behavior changes.
 5. Run the available validation checks and describe any limitations.
-6. Preserve source attribution and comply with the applicable licenses.
+6. Respect applicable licenses and retain required notices whenever third-party material is incorporated.
 7. Never commit private benchmark answers, credentials, or sensitive raw review outputs.
 
 Pull requests should explain the problem being addressed, the proposed change, and how it was verified.
@@ -209,7 +209,7 @@ Pull requests should explain the problem being addressed, the proposed change, a
 
 The repository is distributed under the [MIT License](LICENSE), subject to the notices and terms applicable to individual materials.
 
-Code Review Expert is adapted from the upstream [awesome-skills/code-review-skill](https://github.com/awesome-skills/code-review-skill) project. See [SOURCE_AND_LICENSE.md](SOURCE_AND_LICENSE.md) for source attribution and licensing details.
+Code Review Expert is an independently developed project. Its instructions and supporting materials were authored for this repository using general software-engineering principles and practices. See [SOURCE_AND_LICENSE.md](SOURCE_AND_LICENSE.md) for the project's authorship and licensing statement.
 
 ---
 
