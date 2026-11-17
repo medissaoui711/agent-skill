@@ -66,7 +66,7 @@ def _canonical(item: dict[str, Any]) -> str:
 
 def _duplicate_key(item: dict[str, Any]) -> tuple[Any, ...]:
     return (item["file"], item.get("line"), item["category"],
-            re.sub(r"\\s+", " ", item["title"].lower()).strip())
+            re.sub(r"\s+", " ", item["title"].lower()).strip())
 
 
 def deduplicate_findings_detailed(
