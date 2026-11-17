@@ -11,7 +11,7 @@
 - Official Benchmark V1: **NO-GO**.
 - Scoring: **BLOCKED_PENDING_ADJUDICATION**.
 - Independent adjudication and reproducible baseline/skill-enabled experiments remain release gates.
-- Private adjudication aggregates are not published here. Any owner-reported private counts are **owner-asserted (private archive)** and are not independently verifiable from this public repository.
+- Ground Truth snapshot: **0/32 findings accepted; 8/8 clean/control cases provisional** — **owner-asserted (private archive)**, not independently verifiable from this public repository. These aggregate counts disclose no case-level labels or expected findings.
 - No model-performance result is claimed by this status page.
 
 ## Experiment output handling
