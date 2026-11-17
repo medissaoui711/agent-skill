@@ -1,6 +1,6 @@
 # Code Review Benchmark
 
-A public, evidence-oriented benchmark for Code Review Expert. The original five-case pilot is retained and Phase 5D Batches A–C add 25 synthetic cases (30 public cases total). Public case materials intentionally omit expected findings and answer keys.
+A public, evidence-oriented benchmark for Code Review Expert. The original five-case pilot is retained and Phase 5D Batches A–D add 35 synthetic cases (40 public cases total). Public case materials intentionally omit expected findings and answer keys.
 
 ## Safety and separation
 - Projects are synthetic fixtures, not production software. Some intentionally contain defects; do not deploy them.
@@ -54,7 +54,7 @@ Run matching only in the isolated evaluation environment after raw review output
 See [SCORING_POLICY.md](SCORING_POLICY.md) for matching and scoring semantics.
 
 ## Development-stage limitation
-The 30-case set validates the expanding pipeline, not general model capability. Do not publish capability claims or claim V1 thresholds from these cases. Continue the controlled expansion toward 40 cases and run repeated baseline/skill-enabled trials. Independent human adjudication remains a pre-commercial readiness requirement; current provisional labels are not independently adjudicated or scoring-eligible.
+The 40-case set validates the expanding pipeline, not general model capability. Do not publish capability claims or claim V1 thresholds from these cases. The controlled fixture expansion has reached 40 cases and run repeated baseline/skill-enabled trials. Independent human adjudication remains a pre-commercial readiness requirement; current provisional labels are not independently adjudicated or scoring-eligible.
 
 
 ## Phase 5D Batch B
@@ -79,4 +79,9 @@ Batch C adds nine synthetic cases to the 21-case Batch B inventory (30 public fi
 - Security: security-008 (Spring mass assignment), security-009 (Express secret-bearing logs), security-010 (FastAPI refresh-token purpose).
 - Architecture: architecture-004 (Django request coupling), architecture-005 (Prisma type leakage), architecture-006 (Go worker context lifecycle).
 
-The validator requires exactly 30 unique case IDs. This remains a development dataset; private references stay restricted and no scoring eligibility or independent adjudication is claimed.
+The validator requires exactly 40 unique case IDs. This remains a development dataset; private references stay restricted and no scoring eligibility or independent adjudication is claimed.
+
+
+## Phase 5D Batch D
+
+Batch D completes the 40-case public fixture inventory with five performance/reliability cases (Django ORM query amplification, Spring executor saturation, Node.js repeated rule compilation, Go response-body lifecycle, and FastAPI cache invalidation) and five clean/control cases (Go cancellation propagation, Spring object ownership authorization, React immutable memoization, FastAPI bounded batch processing, and Spring structured audit logging). The five new performance findings remain private and provisional; control fixtures are not labelled as clean in public task materials. The complete set is still a development dataset, not an independently adjudicated or scoring-eligible benchmark.
