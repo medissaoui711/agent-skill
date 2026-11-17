@@ -10,7 +10,7 @@ Agent Skills is a growing repository of structured instructions and supporting r
 
 The repository currently includes **Code Review Expert**: a senior-reviewer-oriented skill for examining pull requests, diffs, repositories, and proposed changes. It prioritizes actionable findings, traceable evidence, and honest reporting over superficial feedback.
 
-A separate **Code Review Benchmark** provides synthetic review cases and a deterministic evaluation harness. Its private answer key is intentionally maintained outside this public repository.
+A separate **Code Review Benchmark** provides **40 public synthetic review cases** and a deterministic evaluation harness. Its private answer key is intentionally maintained outside this public repository.
 
 ---
 
@@ -87,11 +87,13 @@ Severity describes impact, not confidence. Findings should not be inflated to ma
 
 ## Code Review Benchmark
 
-The public benchmark contains synthetic review cases, schemas, validation tools, and a deterministic evaluation harness. The pilot has five cases; the approved V1 target is 40 cases across logic/runtime, security, architecture, performance/reliability, and clean controls.
+The public development dataset contains **40 synthetic review cases**: 10 logic/runtime, 10 security, 6 architecture, 6 performance/reliability, and 8 clean/control cases. It includes schemas, validation tools, and a deterministic evaluation harness.
 
 **Ground truth and expected answers are not stored in this repository.** Review execution and evaluation are separated to prevent answer-key leakage.
 
-See [benchmark/README.md](benchmark/README.md) for the protocol, case inventory, and local validation. The five-case pilot validates the benchmark pipeline; it does not certify model capability or establish that V1 thresholds have been met.
+The 40-case inventory establishes fixture completeness and supports technical calibration. It does **not** establish independently adjudicated reference answers, measured model capability, or achievement of the V1 scoring thresholds. Official Benchmark V1 scoring remains blocked pending the private adjudication and release process.
+
+See [benchmark/README.md](benchmark/README.md) for the complete case inventory, protocol, and local validation.
 
 ## Installation
 
@@ -159,7 +161,7 @@ These boundaries help keep review feedback useful, auditable, and safe to act on
 │       ├── engineering-review.md
 │       └── review-report.md
 ├── benchmark/
-│   ├── cases/                    # Public synthetic cases; no answer key
+│   ├── cases/                    # 40 public synthetic cases; no answer key
 │   ├── evaluator/                # Deterministic post-review evaluator
 │   ├── schemas/
 │   └── tests/
@@ -185,7 +187,7 @@ These boundaries help keep review feedback useful, auditable, and safe to act on
 This repository includes separate GitHub Actions workflows:
 
 1. **Validate Agent Skills:** checks Agent Skills format, metadata, naming conventions, and local Markdown links.
-2. **Validate Code Review Benchmark:** validates the public pilot manifest and schemas, then runs evaluator unit tests.
+2. **Validate Code Review Benchmark:** validates the public manifest and schemas, then runs evaluator unit tests.
 
 Passing these checks verifies only the checks they run. Benchmark CI does not run an AI model, access private ground truth, or certify review quality.
 
