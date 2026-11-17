@@ -58,9 +58,9 @@ def ensure_private_output_path(output: Path) -> Path:
 def write_record(output: Path, record: dict) -> None:
     """Create a new frozen record exclusively; never overwrite an existing record."""
     output.parent.mkdir(parents=True, exist_ok=True)
-    with output.open("x", encoding="utf-8", newline="\\n") as stream:
+    with output.open("x", encoding="utf-8") as stream:
         json.dump(record, stream, indent=2, sort_keys=True, allow_nan=False)
-        stream.write("\\n")
+        stream.write(chr(10))
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
