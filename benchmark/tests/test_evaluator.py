@@ -153,7 +153,7 @@ class MatchingTests(unittest.TestCase):
 class MetricsTests(unittest.TestCase):
     def test_expected_metrics(self):
         result = {"true_positive_count": 8, "false_positive_count": 2, "false_negative_count": 2,
-                  "duplicate_count": 1, "candidate_count": 11, "expected_count": 10,
+                  "duplicate_count": 1, "candidate_count": 10, "expected_count": 10,
                   "matches": [{"severity_exact": True, "location_within_tolerance": True} for _ in range(7)]
                   + [{"severity_exact": False, "location_within_tolerance": True}]}
         metrics = calculate(result)["metrics"]
