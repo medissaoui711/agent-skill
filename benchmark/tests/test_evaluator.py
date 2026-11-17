@@ -1,12 +1,15 @@
 from __future__ import annotations
 import itertools
+import json
+import tempfile
 import sys
 import unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "evaluator"))
-from common import normalize_findings, deduplicate_findings
+from common import normalize_findings, deduplicate_findings, load_json
 from match_findings import match
-from calculate_metrics import calculate
+from calculate_metrics import calculate, validate_match_result
+from generate_report import render
 from validate_dataset import validate
 
 
@@ -30,6 +33,22 @@ class DatasetTests(unittest.TestCase):
     def test_rejects_traversal_path(self):
         with self.assertRaises(ValueError):
             normalize_findings({"findings": [finding(file="../outside.js")]})
+
+    def test_rejects_empty_and_drive_absolute_paths(self):
+        for path in ("./", "C:/outside.js", "C:\\outside.js"):
+            with self.subTest(path=path), self.assertRaises(ValueError):
+                normalize_findings({"findings": [finding(file=path)]})
+
+    def test_load_json_rejects_duplicate_keys_and_non_finite_numbers(self):
+        with tempfile.TemporaryDirectory() as directory:
+            duplicate = Path(directory) / "duplicate.json"
+            duplicate.write_text('{"findings": [], "findings": []}', encoding="utf-8")
+            with self.assertRaises(ValueError):
+                load_json(duplicate)
+            non_finite = Path(directory) / "non-finite.json"
+            non_finite.write_text('{"value": NaN}', encoding="utf-8")
+            with self.assertRaises(ValueError):
+                load_json(non_finite)
 
     def test_negative_tolerance_rejected(self):
         with self.assertRaises(ValueError):
@@ -134,7 +153,7 @@ class MatchingTests(unittest.TestCase):
 class MetricsTests(unittest.TestCase):
     def test_expected_metrics(self):
         result = {"true_positive_count": 8, "false_positive_count": 2, "false_negative_count": 2,
-                  "duplicate_count": 1, "candidate_count": 11, "expected_count": 10,
+                  "duplicate_count": 1, "candidate_count": 10, "expected_count": 10,
                   "matches": [{"severity_exact": True, "location_within_tolerance": True} for _ in range(7)]
                   + [{"severity_exact": False, "location_within_tolerance": True}]}
         metrics = calculate(result)["metrics"]
@@ -151,6 +170,53 @@ class MetricsTests(unittest.TestCase):
         self.assertIsNone(metrics["precision"])
         self.assertIsNone(metrics["recall"])
         self.assertIsNone(metrics["f1"])
+
+    def test_rejects_inconsistent_counts(self):
+        result = {"true_positive_count": 1, "false_positive_count": 0,
+                  "false_negative_count": 0, "duplicate_count": 0,
+                  "candidate_count": 2, "expected_count": 1,
+                  "matches": [{"severity_exact": True, "location_within_tolerance": True}]}
+        with self.assertRaises(ValueError):
+            calculate(result)
+
+    def test_rejects_boolean_and_negative_counts(self):
+        result = {"true_positive_count": True, "false_positive_count": 0,
+                  "false_negative_count": 0, "duplicate_count": 0,
+                  "candidate_count": 1, "expected_count": 1,
+                  "matches": [{"severity_exact": True, "location_within_tolerance": True}]}
+        with self.assertRaises(ValueError):
+            validate_match_result(result)
+        result["true_positive_count"] = 1
+        result["false_positive_count"] = -1
+        with self.assertRaises(ValueError):
+            validate_match_result(result)
+
+    def test_diagnostics_survive_metrics_and_report(self):
+        result = {"true_positive_count": 1, "false_positive_count": 1,
+                  "false_negative_count": 1, "duplicate_count": 0,
+                  "candidate_count": 2, "expected_count": 2,
+                  "matches": [{"severity_exact": True, "location_within_tolerance": True}],
+                  "ambiguous_findings": [{"ambiguity_reason": "multiple_optimal_references"}],
+                  "conflicting_duplicate_groups": [{"variant_count": 2}],
+                  "unmatched_findings": [{}], "false_negatives": [{}],
+                  "optimal_assignment": {"maximum_cardinality": 2,
+                      "localized_pair_count": 2, "total_line_distance": 1,
+                      "scored_forced_matches": 1}}
+        metrics = calculate(result)
+        self.assertEqual(metrics["diagnostics"]["ambiguous_finding_count"], 1)
+        self.assertEqual(metrics["diagnostics"]["optimal_assignment"]["maximum_cardinality"], 2)
+        report = render(metrics, "Integrity Report")
+        self.assertIn("Ambiguous findings not scored as TP: **1**", report)
+        self.assertIn("Maximum achievable cardinality", report)
+        self.assertIn("Forced matches actually scored", report)
+
+    def test_report_escapes_markdown_table_cells_and_rejects_bad_counts(self):
+        data = {"counts": {"true_positives": 1}, "metrics": {"precision": None}}
+        report = render(data, "A|B")
+        self.assertIn("# A\\|B", report)
+        data["counts"]["true_positives"] = -1
+        with self.assertRaises(ValueError):
+            render(data, "Invalid")
 
 
 if __name__ == "__main__":
