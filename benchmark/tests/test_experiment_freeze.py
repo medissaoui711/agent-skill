@@ -2,7 +2,7 @@ import hashlib, sys, tempfile, unittest
 from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "experiments"))
-from freeze_run import build_record
+from freeze_run import build_record, ensure_private_output_path
 
 class FreezeRunTests(unittest.TestCase):
     def setUp(self):
@@ -35,6 +35,10 @@ class FreezeRunTests(unittest.TestCase):
         altered=dict(record); altered.pop("record_sha256")
         digest=h.sha256(json.dumps(altered,sort_keys=True,separators=(",",":"),ensure_ascii=False).encode()).hexdigest()
         self.assertNotEqual(original,digest)
+    def test_output_path_must_be_outside_public_repository(self):
+        with self.assertRaises(ValueError):
+            ensure_private_output_path(ROOT / "public-run.json")
+        self.assertTrue(ensure_private_output_path(self.root / "private-run.json").is_absolute())
     def test_freeze_refuses_existing_record(self):
         record=build_record(self.metadata,self.prompt,self.raw)
         self.assertEqual(record["publication_state"],"PRIVATE")
