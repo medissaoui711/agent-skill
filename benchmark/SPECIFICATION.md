@@ -46,3 +46,8 @@ Review receives public case files only. Ground truth remains unavailable until r
 7. Reports distinguish measured results from unavailable data.
 8. Generated integration artifacts remain in temporary directories; no private ground-truth material is committed publicly.
 9. No private answer material is committed publicly.
+
+
+## Phase 5D Batch B implementation scope
+
+Batch B adds nine fixtures to the existing 12-case public set, bringing the manifest target for this development slice to 21 cases. The additions cover Spring transaction boundaries, React state mutation, Django pagination, Express middleware ordering, unsafe deserialization, Go filesystem containment, Go service-layer coupling, Spring circular dependencies, and a clean parameterized-query control. Private expected findings remain outside this repository. The 21-case inventory is not a representative 40-case benchmark and does not authorize capability claims or scoring.

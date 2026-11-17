@@ -126,6 +126,98 @@
       "project_files": [
         "benchmark/cases/control-002/project/preferences.ts"
       ]
+    },
+    {
+      "id": "logic-005",
+      "category": "logic",
+      "difficulty": "hard",
+      "title": "Atomic order placement and inventory reservation",
+      "task_file": "benchmark/cases/logic-005/task.md",
+      "project_files": [
+        "benchmark/cases/logic-005/project/OrderService.java"
+      ]
+    },
+    {
+      "id": "logic-006",
+      "category": "logic",
+      "difficulty": "medium",
+      "title": "React cart state mutation and derived total",
+      "task_file": "benchmark/cases/logic-006/task.md",
+      "project_files": [
+        "benchmark/cases/logic-006/project/CartEditor.tsx"
+      ]
+    },
+    {
+      "id": "logic-007",
+      "category": "logic",
+      "difficulty": "medium",
+      "title": "One-based customer pagination",
+      "task_file": "benchmark/cases/logic-007/task.md",
+      "project_files": [
+        "benchmark/cases/logic-007/project/views.py"
+      ]
+    },
+    {
+      "id": "security-005",
+      "category": "security",
+      "difficulty": "medium",
+      "title": "Administrative report middleware ordering",
+      "task_file": "benchmark/cases/security-005/task.md",
+      "project_files": [
+        "benchmark/cases/security-005/project/adminReports.ts"
+      ]
+    },
+    {
+      "id": "security-006",
+      "category": "security",
+      "difficulty": "hard",
+      "title": "Client-controlled report state deserialization",
+      "task_file": "benchmark/cases/security-006/task.md",
+      "project_files": [
+        "benchmark/cases/security-006/project/views.py"
+      ]
+    },
+    {
+      "id": "security-007",
+      "category": "security",
+      "difficulty": "easy",
+      "title": "Document download path containment",
+      "task_file": "benchmark/cases/security-007/task.md",
+      "project_files": [
+        "benchmark/cases/security-007/project/download.go"
+      ]
+    },
+    {
+      "id": "architecture-002",
+      "category": "architecture",
+      "difficulty": "medium",
+      "title": "HTTP framework leakage into project service",
+      "task_file": "benchmark/cases/architecture-002/task.md",
+      "project_files": [
+        "benchmark/cases/architecture-002/project/project_service.go",
+        "benchmark/cases/architecture-002/project/project_repository.go"
+      ]
+    },
+    {
+      "id": "architecture-003",
+      "category": "architecture",
+      "difficulty": "hard",
+      "title": "Circular Spring service constructor dependency",
+      "task_file": "benchmark/cases/architecture-003/task.md",
+      "project_files": [
+        "benchmark/cases/architecture-003/project/UserService.java",
+        "benchmark/cases/architecture-003/project/OrderService.java"
+      ]
+    },
+    {
+      "id": "control-003",
+      "category": "control",
+      "difficulty": "medium",
+      "title": "Parameterized customer email lookup",
+      "task_file": "benchmark/cases/control-003/task.md",
+      "project_files": [
+        "benchmark/cases/control-003/project/customer_lookup.py"
+      ]
     }
   ]
 }
