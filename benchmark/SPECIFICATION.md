@@ -32,9 +32,11 @@ Review receives public case files only. Ground truth remains unavailable until r
 
 ## Pilot exit criteria
 1. Public manifest and referenced files validate.
-2. Evaluator unit tests pass.
-3. Normalization is deterministic.
-4. Matching is conservative and documented.
-5. Undefined metrics are null, not silently zero.
-6. Reports distinguish measured results from unavailable data.
-7. No private answer material is committed publicly.
+2. Evaluator unit and CLI integration tests pass.
+3. The real CLI path from raw findings through Markdown report is exercised end-to-end using synthetic test truth.
+4. Normalization is deterministic.
+5. Matching is conservative and documented.
+6. Undefined metrics are null, not silently zero.
+7. Reports distinguish measured results from unavailable data.
+8. Generated integration artifacts remain in temporary directories; no private ground-truth material is committed publicly.
+9. No private answer material is committed publicly.

@@ -25,14 +25,18 @@ jobs:
     name: Validate public benchmark dataset and evaluator
     runs-on: ubuntu-latest
     timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ['3.11', '3.12']
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: ${{ matrix.python-version }}
       - name: Validate public dataset
         run: python benchmark/evaluator/validate_dataset.py
-      - name: Run evaluator unit tests
+      - name: Run evaluator unit and integration tests
         run: python -m unittest discover -s benchmark/tests -v
