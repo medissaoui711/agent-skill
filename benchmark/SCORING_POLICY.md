@@ -52,3 +52,11 @@ A run is invalid if it exposes ground truth before output freeze, fabricates exe
 ## Reproducibility record
 
 Capture dataset version/hash, repository commit, model/version, date/time, prompt, sampling settings, tool access, run number, raw-output hash, evaluator version, and adjudication notes.
+
+## Metrics and report integrity
+
+The metrics stage validates all count fields as non-negative integers (booleans are not integers for this contract), verifies `candidate_count = TP + FP + duplicates`, verifies `expected_count = TP + FN`, and requires one match record per scored TP. Severity and localization flags on scored matches must be booleans. When the matcher supplies an optimal-assignment diagnostic, its scored-forced-match count must equal TP and its maximum cardinality cannot be below TP.
+
+The metrics artifact retains a safe diagnostic summary: ambiguous finding count and reason counts, conflicting duplicate-group count, unmatched/false-negative counts, and the optimal-assignment objective. The Markdown report must distinguish maximum achievable cardinality from forced matches actually scored. It does not reproduce private reference payloads.
+
+JSON ingestion rejects duplicate object keys and non-standard non-finite numeric constants. Finding paths must be non-empty, repository-relative, non-drive-qualified, free of traversal segments, and free of control characters.
