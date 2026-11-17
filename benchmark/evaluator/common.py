@@ -10,20 +10,24 @@ SEVERITIES = {"critical", "high", "medium", "low", "informational"}
 CATEGORIES = {"correctness", "security", "architecture", "performance", "reliability", "maintainability"}
 REQUIRED = ("title", "category", "severity", "file", "description")
 
+
 def load_json(path: str | Path) -> Any:
     with Path(path).open("r", encoding="utf-8") as handle:
         return json.load(handle)
+
 
 def write_json(path: str | Path, value: Any) -> None:
     target = Path(path)
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(json.dumps(value, indent=2, ensure_ascii=False) + "\n", encoding="utf-8")
 
+
 def normalize_path(value: str) -> str:
     path = value.replace("\\", "/").strip()
     while path.startswith("./"):
         path = path[2:]
     return re.sub(r"/+", "/", path)
+
 
 def normalize_findings(payload: Any) -> list[dict[str, Any]]:
     if isinstance(payload, list):
@@ -55,14 +59,41 @@ def normalize_findings(payload: Any) -> list[dict[str, Any]]:
                            "description": item["description"].strip()})
     return normalized
 
-def deduplicate_findings(findings: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], int]:
-    seen, unique, duplicates = set(), [], 0
+
+def _canonical(item: dict[str, Any]) -> str:
+    return json.dumps(item, sort_keys=True, ensure_ascii=False, separators=(",", ":"))
+
+
+def _duplicate_key(item: dict[str, Any]) -> tuple[Any, ...]:
+    return (item["file"], item.get("line"), item["category"],
+            re.sub(r"\\s+", " ", item["title"].lower()).strip())
+
+
+def deduplicate_findings_detailed(
+    findings: list[dict[str, Any]],
+) -> tuple[list[dict[str, Any]], int, list[dict[str, Any]]]:
+    """Collapse duplicate keys deterministically and quarantine conflicting variants."""
+    groups: dict[tuple[Any, ...], list[dict[str, Any]]] = {}
     for item in findings:
-        key = (item["file"], item.get("line"), item["category"],
-               re.sub(r"\s+", " ", item["title"].lower()).strip())
-        if key in seen:
-            duplicates += 1
-        else:
-            seen.add(key)
-            unique.append(item)
-    return unique, duplicates
+        groups.setdefault(_duplicate_key(item), []).append(item)
+
+    unique: list[dict[str, Any]] = []
+    duplicate_count = 0
+    conflicts: list[dict[str, Any]] = []
+    for key in sorted(groups, key=lambda value: json.dumps(value, ensure_ascii=False, default=str)):
+        variants = sorted(groups[key], key=_canonical)
+        unique.append(variants[0])
+        duplicate_count += len(variants) - 1
+        if len({_canonical(item) for item in variants}) > 1:
+            conflicts.append({
+                "file": key[0], "line": key[1], "category": key[2], "normalized_title": key[3],
+                "variant_count": len(variants), "variants": variants,
+            })
+    unique.sort(key=_canonical)
+    return unique, duplicate_count, conflicts
+
+
+def deduplicate_findings(findings: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], int]:
+    """Backward-compatible deterministic duplicate helper."""
+    unique, duplicate_count, _ = deduplicate_findings_detailed(findings)
+    return unique, duplicate_count
