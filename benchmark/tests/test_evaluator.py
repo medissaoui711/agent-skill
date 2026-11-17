@@ -73,6 +73,14 @@ class MatchingTests(unittest.TestCase):
         self.assertEqual(len(result["ambiguous_findings"]), 1)
         self.assertEqual(result["false_negative_count"], 2)
 
+    def test_localized_edges_take_priority_over_missing_line_edges(self):
+        candidates = [finding(line=None), finding(line=10, title="Located candidate")]
+        truth = {"findings": [finding(line=None), finding(line=10, title="Located reference")]}
+        result = match(candidates, truth, 3)
+        self.assertEqual(result["optimal_assignment"]["maximum_cardinality"], 2)
+        self.assertEqual(result["optimal_assignment"]["localized_pair_count"], 1)
+        self.assertEqual(result["true_positive_count"], 2)
+
     def test_missing_line_single_reference_is_unlocalized_match(self):
         result = match([finding(line=None)], {"findings": [finding(line=10)]})
         self.assertEqual(result["true_positive_count"], 1)
@@ -104,6 +112,8 @@ class MatchingTests(unittest.TestCase):
         self.assertEqual(result["true_positive_count"], 0)
         self.assertEqual(result["false_positive_count"], 2)
         self.assertEqual(len(result["conflicting_duplicate_groups"]), 1)
+        reversed_result = match(list(reversed(candidates)), {"findings": [finding()]})
+        self.assertEqual(result, reversed_result)
 
     def test_no_eligible_edges(self):
         result = match([finding(line=100)], {"findings": [finding(line=1)]}, 2)
