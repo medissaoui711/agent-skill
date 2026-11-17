@@ -43,7 +43,7 @@ class DocumentationConsistencyTests(unittest.TestCase):
         self.assertEqual(len({case["id"] for case in self.cases}), 40)
 
     def test_root_readme_case_count_marker_matches_manifest(self) -> None:
-        matches = re.findall(r"<!--\\s*benchmark:public-case-count\\s*=\\s*(\\d+)\\s*-->", self.root_readme)
+        matches = re.findall(r"<!--\s*benchmark:public-case-count\s*=\s*(\d+)\s*-->", self.root_readme)
         self.assertEqual(len(matches), 1)
         self.assertEqual(int(matches[0]), len(self.cases))
 
