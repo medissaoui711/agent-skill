@@ -2,14 +2,14 @@ name: Validate Code Review Benchmark
 
 on:
   pull_request:
-    branches: [main, feat/phase-5g-evidence-infra]
+    branches: [main]
     paths:
       - 'benchmark/**'
       - 'README.md'
       - 'STATUS.md'
       - '.github/workflows/validate-benchmark.yml'
   push:
-    branches: [main, feat/phase-5g-evidence-infra]
+    branches: [main]
     paths:
       - 'benchmark/**'
       - 'README.md'
