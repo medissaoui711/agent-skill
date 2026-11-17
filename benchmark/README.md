@@ -31,7 +31,17 @@ Requires Python 3.11+ and the standard library:
 python benchmark/evaluator/validate_dataset.py
 python -m unittest discover -s benchmark/tests -v
 ```
-The matcher accepts a private ground-truth JSON path explicitly. Supply it only inside the isolated evaluation environment. See [SCORING_POLICY.md](SCORING_POLICY.md).
+
+The evaluator pipeline is composed of four explicit CLI stages:
+```bash
+python benchmark/evaluator/normalize_findings.py <raw-review.json> <normalized.json>
+python benchmark/evaluator/match_findings.py <normalized.json> <isolated-ground-truth.json> <matches.json>
+python benchmark/evaluator/calculate_metrics.py <matches.json> <metrics.json>
+python benchmark/evaluator/generate_report.py <metrics.json> <report.md>
+```
+Run matching only in the isolated evaluation environment after raw review output is frozen. The integration suite invokes these real CLI entry points using synthetic inputs in temporary directories; it never reads the private ground-truth repository and never writes generated artifacts into the checkout.
+
+See [SCORING_POLICY.md](SCORING_POLICY.md) for matching and scoring semantics.
 
 ## Pilot limitation
 Five cases validate the pipeline, not general model capability. Do not publish capability claims or claim V1 thresholds from this pilot. Expand to 40 cases, independently review ground truth, and run repeated baseline/skill-enabled trials.
