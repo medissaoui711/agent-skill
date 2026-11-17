@@ -24,12 +24,13 @@ def _edge_cost(candidate: dict[str, Any], reference: dict[str, Any], tolerance: 
 
 
 def _solve(candidates: list[dict[str, Any]], expected: list[dict[str, Any]],
-           tolerance: int) -> tuple[int, int, list[tuple[int, int]]]:
+           tolerance: int, localization_weight: int | None = None) -> tuple[int, int, list[tuple[int, int]]]:
     """Successive shortest augmenting paths; returns max flow then min cost."""
     n, m = len(candidates), len(expected)
     if not n or not m:
         return 0, 0, []
-    localization_weight = min(n, m) * tolerance + 1
+    if localization_weight is None:
+        localization_weight = min(n, m) * tolerance + 1
     source, candidate_start, expected_start, sink = 0, 1, 1 + n, 1 + n + m
     graph: list[list[list[int]]] = [[] for _ in range(sink + 1)]
     pair_edges: dict[tuple[int, int], list[int]] = {}
@@ -90,22 +91,21 @@ def _solve(candidates: list[dict[str, Any]], expected: list[dict[str, Any]],
 
 
 def _objective(candidates: list[dict[str, Any]], expected: list[dict[str, Any]],
-               tolerance: int) -> tuple[int, int]:
-    flow, cost, _ = _solve(candidates, expected, tolerance)
+               tolerance: int, localization_weight: int | None = None) -> tuple[int, int]:
+    flow, cost, _ = _solve(candidates, expected, tolerance, localization_weight)
     return flow, cost
 
 
 def _forced_edge_objective(candidates: list[dict[str, Any]], expected: list[dict[str, Any]],
                            tolerance: int, candidate_index: int,
-                           expected_index: int) -> tuple[int, int] | None:
-    weight = min(len(candidates), len(expected)) * tolerance + 1
+                           expected_index: int, localization_weight: int) -> tuple[int, int] | None:
     edge_cost = _edge_cost(candidates[candidate_index], expected[expected_index],
-                           tolerance, weight)
+                           tolerance, localization_weight)
     if edge_cost is None:
         return None
     remaining_candidates = candidates[:candidate_index] + candidates[candidate_index + 1:]
     remaining_expected = expected[:expected_index] + expected[expected_index + 1:]
-    flow, cost = _objective(remaining_candidates, remaining_expected, tolerance)
+    flow, cost = _objective(remaining_candidates, remaining_expected, tolerance, localization_weight)
     return flow + 1, cost + edge_cost
 
 
@@ -126,13 +126,16 @@ def match(findings: list[dict[str, Any]], truth_payload: Any, tolerance: int = 3
     active_candidates = [item for item in unique if _canonical(item) not in conflict_signatures]
     expected.sort(key=_canonical)
 
-    optimum_flow, optimum_cost, chosen_pairs = _solve(active_candidates, expected, tolerance)
+    localization_weight = min(len(active_candidates), len(expected)) * tolerance + 1
+    optimum_flow, optimum_cost, chosen_pairs = _solve(
+        active_candidates, expected, tolerance, localization_weight
+    )
     possible_by_candidate: dict[int, list[int]] = {}
     for i, candidate in enumerate(active_candidates):
         possible = []
         for j, reference in enumerate(expected):
             forced_objective = _forced_edge_objective(
-                active_candidates, expected, tolerance, i, j
+                active_candidates, expected, tolerance, i, j, localization_weight
             )
             if forced_objective == (optimum_flow, optimum_cost):
                 possible.append(j)
@@ -141,7 +144,6 @@ def match(findings: list[dict[str, Any]], truth_payload: Any, tolerance: int = 3
     # A candidate is matched only if it must be matched and has exactly one
     # reference edge across every globally optimal assignment.
     matches: list[dict[str, Any]] = []
-    matched_candidate_signatures: set[str] = set()
     matched_expected_indices: set[int] = set()
     ambiguous: list[dict[str, Any]] = []
     unmatched: list[dict[str, Any]] = list(quarantined)
@@ -149,7 +151,9 @@ def match(findings: list[dict[str, Any]], truth_payload: Any, tolerance: int = 3
     for i, candidate in enumerate(active_candidates):
         possible = possible_by_candidate[i]
         without_candidate = active_candidates[:i] + active_candidates[i + 1:]
-        candidate_must_be_matched = _objective(without_candidate, expected, tolerance) != (
+        candidate_must_be_matched = _objective(
+            without_candidate, expected, tolerance, localization_weight
+        ) != (
             optimum_flow, optimum_cost
         )
         if len(possible) == 1 and candidate_must_be_matched:
@@ -164,7 +168,6 @@ def match(findings: list[dict[str, Any]], truth_payload: Any, tolerance: int = 3
                 "location_within_tolerance": distance is not None and distance <= tolerance,
                 "line_distance": distance,
             })
-            matched_candidate_signatures.add(_canonical(candidate))
             matched_expected_indices.add(j)
         else:
             unmatched.append(candidate)
