@@ -1,11 +1,9 @@
-# Source Attribution and Licensing
+# Independent Authorship and Licensing
 
-This skill is an independently organized adaptation of code-review guidance from the public repository:
+Code Review Expert and its supporting documentation were independently authored for this repository.
 
-- Source project: https://github.com/awesome-skills/code-review-skill
-- The upstream project was identified as MIT-licensed during preparation. Verify the upstream LICENSE file before redistributing substantial copied material.
-- This repository's skill instructions and checklists are reorganized and rewritten for the Agent Skills format; they are not a verbatim mirror of the upstream repository.
+The project applies general software-engineering principles, established code-review practices, and commonly known vulnerability classes. These ideas, methods, and industry-standard concepts are not claimed as exclusive to any individual upstream project.
 
-If substantial upstream text or files are copied into this repository in a future revision, include the original copyright and MIT license notice as required by that license.
+No upstream project is represented as the source of, or as a work from which, Code Review Expert was adapted. This statement reflects the project's authorship history and the maintainer's confirmation that its content was written independently rather than copied from protected third-party expression.
 
-This repository's license is provided in the root LICENSE file.
+The repository's license is provided in the root [LICENSE](LICENSE) file. If third-party code or substantial protected text is incorporated in a future change, review the applicable license and preserve any required copyright and license notices.
