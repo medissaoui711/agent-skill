@@ -308,6 +308,106 @@
       "project_files": [
         "benchmark/cases/architecture-006/project/worker.go"
       ]
+    },
+    {
+      "id": "performance-002",
+      "category": "performance",
+      "difficulty": "easy",
+      "title": "Django customer list query amplification",
+      "task_file": "benchmark/cases/performance-002/task.md",
+      "project_files": [
+        "benchmark/cases/performance-002/project/customers.py"
+      ]
+    },
+    {
+      "id": "performance-003",
+      "category": "performance",
+      "difficulty": "hard",
+      "title": "Spring report export executor saturation",
+      "task_file": "benchmark/cases/performance-003/task.md",
+      "project_files": [
+        "benchmark/cases/performance-003/project/ReportExportService.java"
+      ]
+    },
+    {
+      "id": "performance-004",
+      "category": "performance",
+      "difficulty": "medium",
+      "title": "Repeated pricing rule compilation",
+      "task_file": "benchmark/cases/performance-004/task.md",
+      "project_files": [
+        "benchmark/cases/performance-004/project/quote.ts"
+      ]
+    },
+    {
+      "id": "performance-005",
+      "category": "performance",
+      "difficulty": "medium",
+      "title": "Go upstream response body lifecycle",
+      "task_file": "benchmark/cases/performance-005/task.md",
+      "project_files": [
+        "benchmark/cases/performance-005/project/proxy.go"
+      ]
+    },
+    {
+      "id": "performance-006",
+      "category": "performance",
+      "difficulty": "hard",
+      "title": "FastAPI stale product cache after mutation",
+      "task_file": "benchmark/cases/performance-006/task.md",
+      "project_files": [
+        "benchmark/cases/performance-006/project/products.py"
+      ]
+    },
+    {
+      "id": "control-004",
+      "category": "control",
+      "difficulty": "medium",
+      "title": "Go request cancellation propagation",
+      "task_file": "benchmark/cases/control-004/task.md",
+      "project_files": [
+        "benchmark/cases/control-004/project/handler.go"
+      ]
+    },
+    {
+      "id": "control-005",
+      "category": "control",
+      "difficulty": "medium",
+      "title": "Spring document ownership authorization",
+      "task_file": "benchmark/cases/control-005/task.md",
+      "project_files": [
+        "benchmark/cases/control-005/project/DocumentService.java"
+      ]
+    },
+    {
+      "id": "control-006",
+      "category": "control",
+      "difficulty": "easy",
+      "title": "React immutable selection memoization",
+      "task_file": "benchmark/cases/control-006/task.md",
+      "project_files": [
+        "benchmark/cases/control-006/project/SelectionPanel.tsx"
+      ]
+    },
+    {
+      "id": "control-007",
+      "category": "control",
+      "difficulty": "hard",
+      "title": "FastAPI bounded batch processing",
+      "task_file": "benchmark/cases/control-007/task.md",
+      "project_files": [
+        "benchmark/cases/control-007/project/batch_service.py"
+      ]
+    },
+    {
+      "id": "control-008",
+      "category": "control",
+      "difficulty": "easy",
+      "title": "Spring structured audit logging",
+      "task_file": "benchmark/cases/control-008/task.md",
+      "project_files": [
+        "benchmark/cases/control-008/project/AuditLogger.java"
+      ]
     }
   ]
 }

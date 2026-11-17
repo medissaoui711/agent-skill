@@ -9,6 +9,8 @@ EXPECTED = {
     "security-001", "security-002", "security-003", "security-004", "security-005", "security-006", "security-007",
     "architecture-001", "architecture-002", "architecture-003", "architecture-004", "architecture-005", "architecture-006", "performance-001", "control-001", "control-002", "control-003",
     "logic-008", "logic-009", "logic-010", "security-008", "security-009", "security-010",
+    "performance-002", "performance-003", "performance-004", "performance-005", "performance-006",
+    "control-004", "control-005", "control-006", "control-007", "control-008",
 }
 CASE_REQUIRED = {"id", "category", "difficulty", "title", "task_file", "project_files"}
 
@@ -69,8 +71,13 @@ def validate() -> list[str]:
                     errors.append(f"{case_id}: missing project file {item!r}.")
     if len(ids) != len(set(ids)):
         errors.append("Case IDs must be unique.")
+    category_counts = {category: sum(1 for case in cases if isinstance(case, dict) and case.get("category") == category)
+                       for category in allowed_categories}
+    expected_category_counts = {"logic": 10, "security": 10, "architecture": 6, "performance": 6, "control": 8}
+    if category_counts != expected_category_counts:
+        errors.append(f"Category distribution must be exactly {expected_category_counts}; got {category_counts}.")
     if set(ids) != EXPECTED:
-        errors.append(f"Batch A+B+C dataset must contain exactly: {sorted(EXPECTED)}.")
+        errors.append(f"Batch A+B+C+D dataset must contain exactly: {sorted(EXPECTED)}.")
     forbidden = {"ground-truth", "expected-results", "answer-key", "answer_key"}
     for path in benchmark_root.rglob("*"):
         if any(part.lower() in forbidden for part in path.parts):
@@ -83,7 +90,7 @@ def main() -> int:
         for error in errors:
             print(f"ERROR: {error}")
         return 1
-    print("SUCCESS: Batch A+B+C public manifest, schemas, and referenced files are valid.")
+    print("SUCCESS: Batch A+B+C+D public manifest, schemas, and referenced files are valid.")
     return 0
 
 if __name__ == "__main__":

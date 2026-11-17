@@ -56,3 +56,8 @@ Batch B adds nine fixtures to the existing 12-case public set, bringing the mani
 ## Phase 5D Batch C implementation scope
 
 Batch C adds nine fixtures to the existing 21-case inventory, bringing the public development slice to 30 cases. The additions cover Go integer overflow, Spring promotion-policy composition, Node.js payment retry idempotency, Spring mass assignment, Express secret-bearing logs, FastAPI refresh-token purpose validation, Django application-service request coupling, Prisma persistence-type leakage, and Go worker cancellation-context ownership. Private expected findings remain in the restricted repository. This 30-case development slice is not a representative 40-case benchmark and does not authorize capability claims or scoring.
+
+
+## Phase 5D Batch D implementation scope
+
+Batch D completes the controlled public fixture expansion from 30 to 40 cases. It adds five performance/reliability fixtures (Django ORM query amplification, Spring executor saturation, Node.js repeated rule compilation, Go response-body lifecycle, and FastAPI cache invalidation) and five clean/control fixtures (Go cancellation propagation, Spring object ownership authorization, React immutable memoization, FastAPI bounded batch processing, and Spring structured audit logging). The public validator enforces the exact 40-case inventory. Private expected findings remain restricted; this completion does not establish independent adjudication, scoring eligibility, or achievement of target metrics.
