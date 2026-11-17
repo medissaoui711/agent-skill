@@ -1,87 +1,122 @@
 # Code Review Benchmark
 
-A public, evidence-oriented benchmark for Code Review Expert. The original five-case pilot is retained and Phase 5D Batches A–D add 35 synthetic cases (40 public cases total). Public case materials intentionally omit expected findings and answer keys.
+A public, evidence-oriented **development dataset** for Code Review Expert. The repository contains 40 synthetic review cases, deterministic evaluator tooling, schemas, and regression tests. Public case materials intentionally omit expected findings and answer keys.
 
-## Safety and separation
+## Dataset status and boundaries
+
+- The manifest is the authoritative public fixture inventory.
+- The 40 fixtures are distributed across logic/runtime (10), security (10), architecture (6), performance/reliability (6), and clean/control (8).
+- Structural validation confirms fixture inventory, schema shape, referenced files, and repository safety constraints.
+- Structural validation does not establish private Ground Truth correctness, independent adjudication, model capability, or achievement of scoring targets.
+- The private Ground Truth repository remains separate. The review environment must not access it; only the isolated evaluator may receive eligible reference data after raw review output is frozen.
+- Official Benchmark V1 scoring remains blocked pending the private adjudication and release process.
+
+## Safety
+
 - Projects are synthetic fixtures, not production software. Some intentionally contain defects; do not deploy them.
 - Never store ground truth, expected locations, answer keys, or answer-revealing outputs here.
-- The review environment must not access the private ground-truth repository.
-- Only the isolated evaluator receives ground truth after raw review output is frozen.
+- Never execute candidate fixture code as part of dataset validation or release-readiness auditing.
+- Preserve raw review output before any reference data is made available to the evaluator.
 
-## Case inventory
+## Complete case inventory
 
-| ID | Area | Purpose |
+The table below is generated and regression-checked against `cases/manifest.json`. Category names are normalized for readability; the manifest remains authoritative.
+
+| ID | Category | Case |
 | --- | --- | --- |
-| logic-001 | Logic | Boolean business-rule reasoning |
-| logic-002 | Logic | Concurrent inventory reservation |
-| logic-003 | Logic | Optional field update semantics |
-| logic-004 | Logic | Payment failure propagation |
-| security-001 | Security | Path traversal and filesystem boundaries |
-| security-002 | Security | Safe SQL query construction |
+| logic-001 | Logic / Runtime | Subscription shipping eligibility |
+| logic-002 | Logic / Runtime | Concurrent inventory reservation |
+| logic-003 | Logic / Runtime | Optional delivery note update |
+| logic-004 | Logic / Runtime | Payment capture failure propagation |
+| logic-005 | Logic / Runtime | Atomic order placement and inventory reservation |
+| logic-006 | Logic / Runtime | React cart state mutation and derived total |
+| logic-007 | Logic / Runtime | One-based customer pagination |
+| logic-008 | Logic / Runtime | Integer subtotal calculation |
+| logic-009 | Logic / Runtime | Promotion eligibility policy composition |
+| logic-010 | Logic / Runtime | Payment capture retry idempotency |
+| security-001 | Security | User document download endpoint |
+| security-002 | Security | Customer search query handling |
 | security-003 | Security | Project document authorization |
-| security-004 | Security | Server-side URL retrieval boundary |
-| architecture-001 | Architecture | Request-context coupling across entry points |
-| performance-001 | Performance | N+1 database access |
-| control-001 | Control | Clean implementation / false-positive restraint |
-| control-002 | Control | Allowlist validation and authenticated identity |
-
-The manifest is the authoritative list of currently implemented public cases. Batch A is a controlled expansion slice, not a representative 40-case benchmark.
-
-The control case is not labelled as clean in its task. Its expected result is private.
+| security-004 | Security | Remote avatar import |
+| security-005 | Security | Administrative report middleware ordering |
+| security-006 | Security | Client-controlled report state deserialization |
+| security-007 | Security | Document download path containment |
+| security-008 | Security | Self-service user update accepts privileged fields |
+| security-009 | Security | Authorization credentials included in request logs |
+| security-010 | Security | Refresh endpoint accepts access tokens as refresh tokens |
+| architecture-001 | Architecture | Invoice service shared by HTTP and worker |
+| architecture-002 | Architecture | HTTP framework leakage into project service |
+| architecture-003 | Architecture | Circular Spring service constructor dependency |
+| architecture-004 | Architecture | Django request object crosses application service boundary |
+| architecture-005 | Architecture | Persistence ORM type leaks through invoice service contract |
+| architecture-006 | Architecture | Worker discards cancellation context during job processing |
+| performance-001 | Performance / Reliability | Order summary aggregation |
+| performance-002 | Performance / Reliability | Django customer list query amplification |
+| performance-003 | Performance / Reliability | Spring report export executor saturation |
+| performance-004 | Performance / Reliability | Repeated pricing rule compilation |
+| performance-005 | Performance / Reliability | Go upstream response body lifecycle |
+| performance-006 | Performance / Reliability | FastAPI stale product cache after mutation |
+| control-001 | Clean / Control | Account profile update flow |
+| control-002 | Clean / Control | Notification preference allowlist |
+| control-003 | Clean / Control | Parameterized customer email lookup |
+| control-004 | Clean / Control | Go request cancellation propagation |
+| control-005 | Clean / Control | Spring document ownership authorization |
+| control-006 | Clean / Control | React immutable selection memoization |
+| control-007 | Clean / Control | FastAPI bounded batch processing |
+| control-008 | Clean / Control | Spring structured audit logging |
 
 ## Review protocol
-Give the reviewer only the case task and files listed in `cases/manifest.json`, using identical baseline instructions. Record model/version, date, prompt, tools, sampling settings, raw output, and run number. Do not expose ground truth before freezing the output.
+
+Give the reviewer only the case task and files listed in `cases/manifest.json`, using identical baseline instructions. Record model/version, date/time, prompt, tools, sampling settings, raw output, and run number. Do not expose ground truth before freezing the output.
 
 ## Finding interchange
+
 A JSON object contains a `findings` array. Each finding requires `title`, `category`, `severity`, `file`, and `description`. Recommended: `line` (1-based), `impact`, `recommendation`. Categories: correctness, security, architecture, performance, reliability, maintainability. Severities: critical, high, medium, low, informational.
 
 ## Local validation
+
 Requires Python 3.11+ and the standard library:
+
 ```bash
 python benchmark/evaluator/validate_dataset.py
 python -m unittest discover -s benchmark/tests -v
 ```
 
 The evaluator pipeline is composed of four explicit CLI stages:
+
 ```bash
 python benchmark/evaluator/normalize_findings.py <raw-review.json> <normalized.json>
 python benchmark/evaluator/match_findings.py <normalized.json> <isolated-ground-truth.json> <matches.json>
 python benchmark/evaluator/calculate_metrics.py <matches.json> <metrics.json>
 python benchmark/evaluator/generate_report.py <metrics.json> <report.md>
 ```
+
 Run matching only in the isolated evaluation environment after raw review output is frozen. The integration suite invokes these real CLI entry points using synthetic inputs in temporary directories; it never reads the private ground-truth repository and never writes generated artifacts into the checkout.
 
 See [SCORING_POLICY.md](SCORING_POLICY.md) for matching and scoring semantics.
 
-## Development-stage limitation
-The 40-case set validates the expanding pipeline, not general model capability. Do not publish capability claims or claim V1 thresholds from these cases. The controlled fixture expansion has reached 40 cases and run repeated baseline/skill-enabled trials. Independent human adjudication remains a pre-commercial readiness requirement; current provisional labels are not independently adjudicated or scoring-eligible.
+## Experimental evidence status
 
+The earlier statement that repeated baseline/skill-enabled trials had been run is withdrawn from this documentation until reproducible run records can be produced and audited. During this documentation audit, no experiment artifacts or reproducibility records sufficient to substantiate that statement were identified in either repository's searchable contents.
 
-## Phase 5D Batch B
+Accordingly, this repository currently makes **no claim that baseline/skill-enabled trials have been completed**, and publishes no model-performance measurements from such trials. A future experiment report must include, at minimum:
 
-Batch B adds nine synthetic cases to the 12-case Batch A inventory (21 public fixtures total):
-- Logic: logic-005 (Spring transaction boundary), logic-006 (React state mutation), logic-007 (Django pagination).
-- Security: security-005 (Express middleware ordering), security-006 (unsafe Django deserialization), security-007 (Go path containment).
-- Architecture: architecture-002 (Go HTTP coupling), architecture-003 (Spring circular dependency).
-- Control: control-003 (parameterized Django query).
+- Dataset version and manifest hash, plus the public repository commit.
+- Model/provider and exact model version; date/time and run identifier.
+- Identical task inputs and recorded baseline/skill prompts.
+- Sampling parameters, enabled tools, and execution environment.
+- Frozen raw outputs and their cryptographic hashes.
+- Evaluator version, metric artifacts, and any exclusions or failures.
+- Confirmation that Ground Truth was not exposed before output freeze.
 
-The validator requires the exact 21-case inventory. This remains a development dataset, not an independently adjudicated or scoring-eligible benchmark.
+If records are unavailable, the correct status is `NOT_RUN_OR_NOT_EVIDENCED`, not a presumed successful experiment.
 
+## Scoring and release interpretation
 
-### CI workflow
-The benchmark validation workflow also runs for pull requests targeting `feat/phase-5d-batch-a`, so the chained Batch B PR receives the same Python 3.11/3.12 dataset and evaluator checks. The workflow uses read-only repository permissions and does not execute fixture project code.
+The full V1 target thresholds are documented in [SCORING_POLICY.md](SCORING_POLICY.md). They are targets, not achieved results. Do not apply them as pass/fail certification to the pilot or infer that a 40-case structural validation establishes those metrics.
 
+Private Ground Truth currently remains provisional: findings have not been independently adjudicated and are not scoring-eligible. The public fixture set is suitable for continued evaluator engineering and calibration work, but **Official Benchmark V1 remains NO-GO and scoring remains BLOCKED_PENDING_ADJUDICATION**.
 
-## Phase 5D Batch C
+## Expansion history
 
-Batch C adds nine synthetic cases to the 21-case Batch B inventory (30 public fixtures total):
-- Logic: logic-008 (Go integer overflow), logic-009 (Spring promotion policy), logic-010 (Node.js payment retry idempotency).
-- Security: security-008 (Spring mass assignment), security-009 (Express secret-bearing logs), security-010 (FastAPI refresh-token purpose).
-- Architecture: architecture-004 (Django request coupling), architecture-005 (Prisma type leakage), architecture-006 (Go worker context lifecycle).
-
-The validator requires exactly 40 unique case IDs. This remains a development dataset; private references stay restricted and no scoring eligibility or independent adjudication is claimed.
-
-
-## Phase 5D Batch D
-
-Batch D completes the 40-case public fixture inventory with five performance/reliability cases (Django ORM query amplification, Spring executor saturation, Node.js repeated rule compilation, Go response-body lifecycle, and FastAPI cache invalidation) and five clean/control cases (Go cancellation propagation, Spring object ownership authorization, React immutable memoization, FastAPI bounded batch processing, and Spring structured audit logging). The five new performance findings remain private and provisional; control fixtures are not labelled as clean in public task materials. The complete set is still a development dataset, not an independently adjudicated or scoring-eligible benchmark.
+The 40-case inventory was assembled incrementally: the original five-case pilot was expanded through Batches A, B, C, and D. This history describes fixture authoring sequence only; it does not imply that any batch was independently representative, adjudicated, or experimentally evaluated.
