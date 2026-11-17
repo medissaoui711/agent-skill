@@ -141,6 +141,27 @@ class FreezeRunTests(unittest.TestCase):
             ):
                 build_record(self.metadata, self.prompt, self.raw)
 
+    def test_cli_fails_closed_when_jsonschema_is_unavailable(self):
+        output = self.root / "missing-dependency-record.json"
+        result = subprocess.run(
+            [
+                sys.executable, "-S", str(SCRIPT),
+                "--metadata", str(self.metadata_path),
+                "--prompt", str(self.prompt),
+                "--raw-output", str(self.raw),
+                "--output", str(output),
+            ],
+            capture_output=True,
+            text=True,
+            check=False,
+        )
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("EXPERIMENT_FREEZE_FAILED", result.stderr)
+        self.assertIn("Missing required dependency", result.stderr)
+        self.assertIn("benchmark/experiments/requirements.txt", result.stderr)
+        self.assertFalse(output.exists())
+        self.assertEqual(list(self.root.glob(f".{output.name}.*.tmp")), [])
+
     def test_schema_rejects_missing_required_fields(self):
         metadata = dict(self.metadata)
         metadata.pop("model_version")
