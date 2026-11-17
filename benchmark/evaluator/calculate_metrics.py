@@ -26,9 +26,10 @@ def validate_match_result(result: Any) -> dict[str, Any]:
     if len(matches) != counts["true_positive_count"]:
         raise ValueError("matches length must equal true_positive_count.")
     if counts["candidate_count"] != (counts["true_positive_count"] +
-                                      counts["false_positive_count"] +
-                                      counts["duplicate_count"]):
-        raise ValueError("candidate_count must equal TP + FP + duplicate_count.")
+                                      counts["false_positive_count"]):
+        raise ValueError("candidate_count must equal TP + FP; duplicates are already included in FP.")
+    if counts["duplicate_count"] > counts["false_positive_count"]:
+        raise ValueError("duplicate_count cannot exceed false_positive_count.")
     if counts["expected_count"] != (counts["true_positive_count"] +
                                      counts["false_negative_count"]):
         raise ValueError("expected_count must equal TP + FN.")
