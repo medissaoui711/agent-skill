@@ -218,6 +218,96 @@
       "project_files": [
         "benchmark/cases/control-003/project/customer_lookup.py"
       ]
+    },
+    {
+      "id": "logic-008",
+      "category": "logic",
+      "difficulty": "easy",
+      "title": "Integer subtotal calculation",
+      "task_file": "benchmark/cases/logic-008/task.md",
+      "project_files": [
+        "benchmark/cases/logic-008/project/pricing.go"
+      ]
+    },
+    {
+      "id": "logic-009",
+      "category": "logic",
+      "difficulty": "medium",
+      "title": "Promotion eligibility policy composition",
+      "task_file": "benchmark/cases/logic-009/task.md",
+      "project_files": [
+        "benchmark/cases/logic-009/project/PromotionPolicy.java"
+      ]
+    },
+    {
+      "id": "logic-010",
+      "category": "logic",
+      "difficulty": "hard",
+      "title": "Payment capture retry idempotency",
+      "task_file": "benchmark/cases/logic-010/task.md",
+      "project_files": [
+        "benchmark/cases/logic-010/project/capture-worker.ts"
+      ]
+    },
+    {
+      "id": "security-008",
+      "category": "security",
+      "difficulty": "medium",
+      "title": "Self-service user update accepts privileged fields",
+      "task_file": "benchmark/cases/security-008/task.md",
+      "project_files": [
+        "benchmark/cases/security-008/project/UserProfileController.java"
+      ]
+    },
+    {
+      "id": "security-009",
+      "category": "security",
+      "difficulty": "easy",
+      "title": "Authorization credentials included in request logs",
+      "task_file": "benchmark/cases/security-009/task.md",
+      "project_files": [
+        "benchmark/cases/security-009/project/request-handler.ts"
+      ]
+    },
+    {
+      "id": "security-010",
+      "category": "security",
+      "difficulty": "hard",
+      "title": "Refresh endpoint accepts access tokens as refresh tokens",
+      "task_file": "benchmark/cases/security-010/task.md",
+      "project_files": [
+        "benchmark/cases/security-010/project/tokens.py"
+      ]
+    },
+    {
+      "id": "architecture-004",
+      "category": "architecture",
+      "difficulty": "medium",
+      "title": "Django request object crosses application service boundary",
+      "task_file": "benchmark/cases/architecture-004/task.md",
+      "project_files": [
+        "benchmark/cases/architecture-004/project/report_service.py"
+      ]
+    },
+    {
+      "id": "architecture-005",
+      "category": "architecture",
+      "difficulty": "hard",
+      "title": "Persistence ORM type leaks through invoice service contract",
+      "task_file": "benchmark/cases/architecture-005/task.md",
+      "project_files": [
+        "benchmark/cases/architecture-005/project/invoice-service.ts"
+      ]
+    },
+    {
+      "id": "architecture-006",
+      "category": "architecture",
+      "difficulty": "medium",
+      "title": "Worker discards cancellation context during job processing",
+      "task_file": "benchmark/cases/architecture-006/task.md",
+      "project_files": [
+        "benchmark/cases/architecture-006/project/worker.go"
+      ]
     }
   ]
 }
