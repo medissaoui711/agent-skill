@@ -48,6 +48,13 @@ def build_record(metadata: dict, prompt: Path, raw_output: Path) -> dict:
     record["record_sha256"] = hashlib.sha256(canonical).hexdigest()
     return record
 
+def ensure_private_output_path(output: Path) -> Path:
+    resolved = output.resolve()
+    public_root = Path(__file__).resolve().parents[2]
+    if resolved.is_relative_to(public_root):
+        raise ValueError("run records must be written outside the public repository")
+    return resolved
+
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--metadata", type=Path, required=True)
@@ -58,6 +65,7 @@ def main() -> int:
     try:
         metadata = json.loads(args.metadata.read_text(encoding="utf-8"))
         record = build_record(metadata, args.prompt, args.raw_output)
+        args.output = ensure_private_output_path(args.output)
         args.output.parent.mkdir(parents=True, exist_ok=True)
         if args.output.exists():
             raise ValueError("Refusing to overwrite an existing frozen run record")
