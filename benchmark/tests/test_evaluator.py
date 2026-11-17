@@ -29,6 +29,9 @@ class DatasetTests(unittest.TestCase):
         ids = [case["id"] for case in manifest["cases"]]
         self.assertEqual(len(ids), 40)
         self.assertEqual(len(ids), len(set(ids)))
+        counts = {category: sum(1 for case in manifest["cases"] if case["category"] == category)
+                  for category in {"logic", "security", "architecture", "performance", "control"}}
+        self.assertEqual(counts, {"logic": 10, "security": 10, "architecture": 6, "performance": 6, "control": 8})
         self.assertTrue({"logic-002", "logic-003", "logic-004",
                          "security-002", "security-003", "security-004",
                          "control-002", "logic-005", "logic-006", "logic-007",
