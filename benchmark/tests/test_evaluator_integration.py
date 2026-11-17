@@ -11,11 +11,12 @@ ROOT = Path(__file__).resolve().parents[2]
 EVALUATOR = ROOT / "benchmark" / "evaluator"
 
 
-def finding(*, line=10, title="Incorrect condition", severity="medium",
+def finding(*, line=10, title="Incorrect condition", category="correctness",
+            severity="medium",
             description="A concrete behavior violates the stated requirement."):
     return {
         "title": title,
-        "category": "correctness",
+        "category": category,
         "severity": severity,
         "file": "src/example.py",
         "line": line,
